@@ -37,6 +37,21 @@
     return `<div class="section-head"><div><p class="eyebrow">${eyebrow}</p><h2>${title}</h2></div><p>${copy}</p></div>`;
   }
 
+  function ensureVideoStyles() {
+    if (document.querySelector('#official-video-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'official-video-styles';
+    style.textContent = `.official-video{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:20px;align-items:center;margin:38px 0 30px;padding:20px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(135deg,rgba(94,209,231,.1),rgba(14,32,44,.76))}.official-video h2{margin:7px 0 9px;font-size:1.25rem}.official-video p{margin:0;color:var(--muted);font-size:.9rem}.official-video a{display:inline-block;margin-top:13px;font-size:.82rem;font-weight:750}.official-video-frame{overflow:hidden;border:1px solid rgba(184,241,255,.25);border-radius:11px;background:#050d13;aspect-ratio:16/9}.official-video iframe{display:block;width:100%;height:100%;border:0}@media(max-width:700px){.official-video{grid-template-columns:1fr;padding:15px;gap:16px}}`;
+    document.head.append(style);
+  }
+
+  function videoSection(video) {
+    const title = read(video, 'title');
+    const description = read(video, 'description');
+    const url = `https://www.youtube.com/watch?v=${video.id}`;
+    return `<section class="official-video"><div><p class="eyebrow">${t('Official video', '官方视频')}</p><h2>${title}</h2><p>${description}</p><a href="${url}" target="_blank" rel="noreferrer">${t('Watch on YouTube', '在 YouTube 上观看')}</a></div><div class="official-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${video.id}" title="${title}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>`;
+  }
+
   function renderHeader() {
     document.querySelector('#site-header').innerHTML = `<header class="site-header"><div class="wrap header-inner">
       <a class="brand" href="/"><span class="brand-mark">✦</span><span>PERMAFROST<small>FIELD WIKI</small></span></a>
@@ -78,8 +93,12 @@
   }
 
   function renderGuides() {
-    const articles = wiki.articles.filter((article) => ['cold-and-weather', 'shelter-network', 'exploration-progression', 'canine-companion', 'co-op-survival'].includes(article.slug));
-    return `<main class="wrap"><section class="section">${sectionHead(t('Survival', '生存'), t('Survival systems', '生存系统'), t('Cold, shelters, exploration, companions, and co-op.', '严寒、避难所、探索、伙伴与合作。'))}<div class="grid three">${articles.map(articleCard).join('')}</div></section></main>`;
+    const groups = [
+      ['Getting started', '起步', 'First steps', '入门指南', 'Start with tools and supplies before moving beyond shelter.', '从工具和补给开始，再离开避难所。', ['essential-tools', 'preparing-for-expedition', 'survival-basics']],
+      ['Weather, shelter & safety', '天气、避难所与安全', 'Surviving the wilderness', '荒野生存', 'Prepare for cold weather, manage hazards, and plan longer journeys.', '为严寒做准备、应对威胁，并规划更长的行程。', ['cold-and-weather', 'survival-hazards', 'shelter-network', 'exploration-progression']],
+      ['Companions & co-op', '伙伴与合作', 'Travel together', '结伴同行', 'Travel with the dog companion or survive with a group.', '与狗狗伙伴同行，或与队友一起生存。', ['canine-companion', 'co-op-survival']]
+    ];
+    return `<main class="wrap">${groups.map(([eyebrowEn, eyebrowZh, titleEn, titleZh, copyEn, copyZh, slugs]) => { const entries = wiki.articles.filter((article) => slugs.includes(article.slug)); return `<section class="section">${sectionHead(t(eyebrowEn, eyebrowZh), t(titleEn, titleZh), t(copyEn, copyZh))}<div class="grid three">${entries.map(articleCard).join('')}</div></section>`; }).join('')}</main>`;
   }
 
   function renderWorld() {
@@ -111,11 +130,13 @@
   function renderArticle() {
     const article = wiki.articles.find((item) => item.slug === articleSlug);
     if (!article) return `<main class="wrap"><section class="section"><h1>${t('Article not found', '未找到条目')}</h1></section></main>`;
+    ensureVideoStyles();
     const articleSource = source(article);
     const related = wiki.articles.filter((item) => item.slug !== article.slug && item.category === article.category).slice(0, 4);
     return `<main class="wrap"><div class="article-layout"><article class="article">
       <p class="eyebrow">${read(article, 'category')}</p><h1>${read(article, 'title')}</h1><p class="lead">${read(article, 'lead')}</p>
       <h2>${t('Overview', '概览')}</h2><ul class="fact-list">${(isZh() ? article.factsZh : article.facts).map((fact) => `<li>${fact}</li>`).join('')}</ul>
+      ${(article.videos || []).map(videoSection).join('')}
       <div class="source-box"><p class="eyebrow">${t('Source', '来源')}</p><p><a href="${articleSource.url}" target="_blank" rel="noreferrer">${t(articleSource.label, articleSource.zh)}</a></p></div>
     </article><aside class="aside"><h3>${t('Related reading', '相关阅读')}</h3><ul class="side-list">${related.map((item) => `<li><a href="${route(item.slug)}">${read(item, 'title')}</a></li>`).join('')}</ul><a href="/library/">${t('Browse library', '浏览资料库')}</a></aside></div></main>`;
   }
