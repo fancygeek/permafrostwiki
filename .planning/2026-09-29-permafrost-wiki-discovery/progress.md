@@ -22,6 +22,9 @@
 - Local preview for the updated library returned HTTP 200. Static verification confirmed JavaScript parses and that all twelve content records match their corresponding article routes.
 - Privately republished the expanded static Wiki to the existing Site and opened the current URL in the Codex panel. The local preview server was stopped after publication.
 - Removed visitor-facing internal-validation language and speculative utilities. The Atlas now links only to existing articles; the expedition planner was removed because it could produce gameplay advice beyond the published sources. Simplified article wording and kept English as the default UI language with Chinese as an optional toggle.
+- Located the supplied `gametemplate` repository in the parent project directory. It is a genuine multi-page game-news/Wiki template rather than a missing external dependency; migration to it is now in progress.
+- Generated the supplied template into the Site output and rebuilt the reachable pages around its header, dark visual system, status band, filtered library, announcement feed, table/TOC layouts, responsive controls, and hero treatment. Replaced all fictional template content with the existing first-party Permafrost data source; deliberately excluded the template's map and crafting calculator because no verified game data supports them yet.
+- Local browser validation passed for the migrated home and library pages. English is selected by default; the Chinese selector translates the interface and article cards. The library category list and keyword search return the expected filtered entries. Removed a remaining source-process phrase from the home copy so the visitor-facing language remains ordinary Wiki copy.
 
 ### Test Results
 | Test | Expected | Actual | Status |
@@ -32,6 +35,11 @@
 | WebMCP runtime contract | Browser exposes document.modelContext | Not available in current browser | skipped |
 | Expanded library preview | HTTP 200 | HTTP 200 | pass |
 | Expanded static Wiki | 12 entries and 12 matching routes | 12 entries and 12 matching routes | pass |
+| Game template migration | Template home and library render with no fictional template data | Passed in local browser | pass |
+| Template language switch | English default and Chinese supplemental content | Passed in local browser | pass |
+| Template library search | Keyword search filters expected entries | Passed for “Rook” | pass |
+| Remaining template pages | News, Survival, Release, and About pages render their expected content | Passed in local browser | pass |
+| JavaScript and source scan | Template source parses and no fictional sample-game text remains on reachable pages | Passed | pass |
 
 ### Errors
 | Error | Resolution |

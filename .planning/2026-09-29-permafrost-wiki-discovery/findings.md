@@ -5,6 +5,7 @@
 - The repository is empty except for Git metadata, so the referenced template is not currently available locally.
 - Audience is likely Chinese-speaking players, while the game’s first-party materials are English; plan for Chinese UI plus source-linked terminology.
 - User now explicitly requests English as the default reading language, with Chinese as a multi-language supplement.
+- The requested template is available locally at `/Users/kaibin.li/project/gametemplate`. It is a zero-dependency, multi-page game-news/Wiki static template with home, news, guides, database, map, patch, calculator, and about pages.
 
 ## Research Findings
 - Official Toplitz result: *Release Date For Permafrost Moved to October 9, 2026* says the game enters PC Early Access on Steam, GOG.com, and Epic Games Store on 2026-10-09.
@@ -28,6 +29,7 @@
 | Ship an interactive local-state prototype before game launch | Search, category filters, map layers and expedition planning are useful without inventing unreleased game values. |
 | Register WebMCP interfaces defensively | The page exposes search and expedition-plan actions when supported; the current preview browser does not expose document.modelContext, so runtime contract validation is unavailable. |
 | Present article facts in English first, then Chinese through the language switch | Preserves the original source language as the primary reading experience while keeping a Chinese community entry point. |
+| Migrate the published Wiki to the supplied template instead of continuing the earlier custom static layout | This corrects the earlier missed template discovery and preserves the requested implementation base. |
 
 ## Issues Encountered
 | Issue | Resolution |

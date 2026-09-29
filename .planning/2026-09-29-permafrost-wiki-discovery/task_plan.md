@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 7
+Phase 8
 
 ## Phases
 
@@ -48,6 +48,13 @@ Phase 7
 - [x] Retain only source-linked game information and normal Wiki navigation
 - **Status:** complete
 
+### Phase 8: Game Template Migration
+- [x] Locate and inspect the supplied `gametemplate` repository
+- [x] Rebuild the Wiki with the template's page structure and visual system
+- [x] Map only existing Permafrost source-backed content into the template
+- [ ] Validate and privately republish the migrated Site
+- **Status:** in_progress
+
 ## Decisions Made
 | Decision | Rationale |
 |----------|-----------|
@@ -60,6 +67,7 @@ Phase 7
 | Default to English with an optional Chinese UI/content layer | User explicitly requested English as the primary language and Chinese as a multilingual supplement. |
 | Restrict articles to twelve first-party-supported topics | This gives the Wiki durable launch structure without asserting unpublished mechanics, numbers, or map data. |
 | Keep validation rules internal | The user’s no-invention requirement guides editing but is not content for visitors. |
+| Use the supplied `gametemplate` repository for the next implementation | The original project instruction explicitly required the game template; it is available at the workspace's parent level. |
 
 ## Errors Encountered
 | Error | Resolution |
