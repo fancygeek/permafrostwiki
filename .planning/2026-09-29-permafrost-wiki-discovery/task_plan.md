@@ -52,8 +52,8 @@ Phase 8
 - [x] Locate and inspect the supplied `gametemplate` repository
 - [x] Rebuild the Wiki with the template's page structure and visual system
 - [x] Map only existing Permafrost source-backed content into the template
-- [ ] Validate and privately republish the migrated Site
-- **Status:** in_progress
+- [x] Validate and privately republish the migrated Site
+- **Status:** complete
 
 ## Decisions Made
 | Decision | Rationale |

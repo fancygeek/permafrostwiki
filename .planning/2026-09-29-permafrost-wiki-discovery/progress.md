@@ -25,6 +25,7 @@
 - Located the supplied `gametemplate` repository in the parent project directory. It is a genuine multi-page game-news/Wiki template rather than a missing external dependency; migration to it is now in progress.
 - Generated the supplied template into the Site output and rebuilt the reachable pages around its header, dark visual system, status band, filtered library, announcement feed, table/TOC layouts, responsive controls, and hero treatment. Replaced all fictional template content with the existing first-party Permafrost data source; deliberately excluded the template's map and crafting calculator because no verified game data supports them yet.
 - Local browser validation passed for the migrated home and library pages. English is selected by default; the Chinese selector translates the interface and article cards. The library category list and keyword search return the expected filtered entries. Removed a remaining source-process phrase from the home copy so the visitor-facing language remains ordinary Wiki copy.
+- Privately published the template-based Wiki to the existing Site URL after the local validation passed. The existing owner-only access configuration was preserved.
 
 ### Test Results
 | Test | Expected | Actual | Status |
@@ -48,3 +49,4 @@
 | Original browser tab was unavailable to this session | Opened a new local preview tab and completed the capability check there. |
 | Source workflow expired credential | Requested a fresh credential for the same Site before reopening the checkout. |
 | Initial article-shell patch contained one incorrect parent path | Verified its partial success, then added the remaining six correct routes in a targeted patch. |
+| Local Git commit after migration | The workspace sandbox blocked creation of `.git/index.lock` | Request an escalated Git commit for the user-authorized migration record. |
