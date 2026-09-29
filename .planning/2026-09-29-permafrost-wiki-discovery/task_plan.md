@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 8
+Phase 9
 
 ## Phases
 
@@ -54,6 +54,13 @@ Phase 8
 - [x] Map only existing Permafrost source-backed content into the template
 - [x] Validate and privately republish the migrated Site
 - **Status:** complete
+
+### Phase 9: Ice Visual Refresh
+- [x] Replace the game template's gold palette with a polar-night ice palette
+- [x] Preserve the template's structure, controls, and existing Permafrost source-backed content
+- [x] Verify dark and light visual themes locally
+- [ ] Privately republish the visual refresh
+- **Status:** in progress
 
 ## Decisions Made
 | Decision | Rationale |

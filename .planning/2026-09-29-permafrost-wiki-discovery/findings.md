@@ -30,6 +30,7 @@
 | Register WebMCP interfaces defensively | The page exposes search and expedition-plan actions when supported; the current preview browser does not expose document.modelContext, so runtime contract validation is unavailable. |
 | Present article facts in English first, then Chinese through the language switch | Preserves the original source language as the primary reading experience while keeping a Chinese community entry point. |
 | Migrate the published Wiki to the supplied template instead of continuing the earlier custom static layout | This corrects the earlier missed template discovery and preserves the requested implementation base. |
+| Use a polar-night ice palette for the template-derived Wiki | The user requested the earlier ice/snow direction rather than the template's gold visual; the refresh preserves the template layout and all existing content. |
 
 ## Issues Encountered
 | Issue | Resolution |

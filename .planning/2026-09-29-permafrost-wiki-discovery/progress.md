@@ -26,6 +26,8 @@
 - Generated the supplied template into the Site output and rebuilt the reachable pages around its header, dark visual system, status band, filtered library, announcement feed, table/TOC layouts, responsive controls, and hero treatment. Replaced all fictional template content with the existing first-party Permafrost data source; deliberately excluded the template's map and crafting calculator because no verified game data supports them yet.
 - Local browser validation passed for the migrated home and library pages. English is selected by default; the Chinese selector translates the interface and article cards. The library category list and keyword search return the expected filtered entries. Removed a remaining source-process phrase from the home copy so the visitor-facing language remains ordinary Wiki copy.
 - Privately published the template-based Wiki to the existing Site URL after the local validation passed. The existing owner-only access configuration was preserved.
+- Reworked the template's dark-gold and warm-light color system into an ice/snow visual: polar-night blue surfaces, snow-white typography, and cyan highlights. The page structure, responsive behavior, theme toggle, and all source-backed Permafrost content remain unchanged.
+- Opened fresh local previews after the CSS update. Visual QA confirmed the revised homepage in both dark and light themes and the database page in the light theme; all use the new blue/ice treatment with no remaining gold palette tokens.
 
 ### Test Results
 | Test | Expected | Actual | Status |
@@ -41,6 +43,7 @@
 | Template library search | Keyword search filters expected entries | Passed for “Rook” | pass |
 | Remaining template pages | News, Survival, Release, and About pages render their expected content | Passed in local browser | pass |
 | JavaScript and source scan | Template source parses and no fictional sample-game text remains on reachable pages | Passed | pass |
+| Ice visual refresh | Home in dark/light themes and database view use ice-blue surfaces and highlights | Passed in local browser | pass |
 
 ### Errors
 | Error | Resolution |

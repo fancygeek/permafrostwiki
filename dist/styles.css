@@ -1,6 +1,6 @@
 /* ==========================================================================
    Permafrost Wiki — 主题样式
-   设计参考 guildrun.org：深色资料库风格 / 金色强调 / Cinzel 标题字
+   设计方向：极夜资料库 / 冰雪蓝高光 / Cinzel 标题字
    生成时间：2026年9月29日
    ========================================================================== */
 
@@ -9,19 +9,19 @@
    -------------------------------------------------------------------------- */
 :root,
 html[data-theme="dark"] {
-  --bg: #060805;
-  --bg-elev: #0d110c;
-  --panel: #161916;
-  --panel-2: #1a2519;
-  --line: #373727;
-  --line-strong: #5c5330;
-  --text: #e8e6d8;
-  --text-dim: #a8a68c;
-  --gold: #e0b34a;
-  --gold-deep: #b8892a;
-  --cyan: #4ec4d9;
-  --ember: #d65a3a;
-  --moss: #2f5a3a;
+  --bg: #071018;
+  --bg-elev: #0b1923;
+  --panel: #0e202c;
+  --panel-2: #12313f;
+  --line: #294756;
+  --line-strong: #4b7a8d;
+  --text: #eefaff;
+  --text-dim: #9ab2bd;
+  --ice: #b8f1ff;
+  --ice-deep: #3c98b1;
+  --cyan: #5ed1e7;
+  --alert: #ff9e5d;
+  --safe: #83e2bd;
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
 
   --radius: 8px;
@@ -31,24 +31,24 @@ html[data-theme="dark"] {
   --header-h: 64px;
   --toc-w: 220px;
   --container: 1120px;
-  --focus: #4ec4d9;
+  --focus: #b8f1ff;
 }
 
 html[data-theme="light"] {
-  --bg: #f4f0e4;
-  --bg-elev: #fffdf6;
-  --panel: #fffaf0;
-  --panel-2: #f0e8d2;
-  --line: #cbb98a;
-  --line-strong: #8a7340;
-  --text: #1a1c14;
-  --text-dim: #4a4c3c;
-  --gold: #9a6f12;
-  --gold-deep: #7a560c;
-  --cyan: #0f6f84;
-  --ember: #b03d22;
-  --moss: #245336;
-  --shadow: 0 14px 36px rgba(40, 32, 8, 0.12);
+  --bg: #edf8fb;
+  --bg-elev: #f7fcfe;
+  --panel: #ffffff;
+  --panel-2: #e1f1f6;
+  --line: #bddae3;
+  --line-strong: #74a9bc;
+  --text: #102734;
+  --text-dim: #4f7380;
+  --ice: #056c89;
+  --ice-deep: #04556d;
+  --cyan: #076e8b;
+  --alert: #af5624;
+  --safe: #176a53;
+  --shadow: 0 14px 36px rgba(27, 78, 96, 0.14);
 }
 
 /* --------------------------------------------------------------------------
@@ -78,7 +78,7 @@ img {
 }
 
 a {
-  color: var(--gold);
+  color: var(--ice);
 }
 
 a:hover {
@@ -139,12 +139,12 @@ a:hover {
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: linear-gradient(145deg, #2a2110, #0d110c 55%, #163028);
-  border: 1px solid var(--gold-deep);
-  color: var(--gold);
+  background: linear-gradient(145deg, #14394a, #0b1923 55%, #102a38);
+  border: 1px solid var(--ice-deep);
+  color: var(--ice);
   font-family: var(--font-display);
   font-weight: 700;
-  box-shadow: inset 0 0 0 1px rgba(224, 179, 74, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(184, 241, 255, 0.18);
 }
 
 .brand strong {
@@ -186,7 +186,7 @@ a:hover {
 .site-nav a:hover,
 .site-nav a[data-active="true"] {
   color: var(--text);
-  border-bottom-color: var(--gold);
+  border-bottom-color: var(--ice);
 }
 
 .header-tools {
@@ -246,9 +246,9 @@ a:hover {
 }
 
 .button.primary {
-  background: linear-gradient(180deg, #efc35d, var(--gold-deep));
-  color: #1a1204;
-  border-color: #f0d48a;
+  background: linear-gradient(180deg, #dffbff, var(--ice-deep));
+  color: #071018;
+  border-color: #d7f8ff;
 }
 
 .button.secondary {
@@ -278,9 +278,9 @@ a:hover {
 }
 
 .pill.live {
-  color: #0d1a10;
-  background: linear-gradient(#8fd89a, #3f8f55);
-  border-color: #b6efc0;
+  color: #06231f;
+  background: linear-gradient(#a5f0d0, #4ba883);
+  border-color: #c5f8df;
 }
 
 .pill.link {
@@ -307,16 +307,16 @@ a:hover {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(1200px 520px at 78% 18%, rgba(78, 196, 217, 0.16), transparent 70%),
-    radial-gradient(900px 480px at 18% 84%, rgba(224, 179, 74, 0.18), transparent 72%),
-    linear-gradient(140deg, #101a14, #060805 62%, #1a1408);
+    radial-gradient(1200px 520px at 78% 18%, rgba(94, 209, 231, 0.2), transparent 70%),
+    radial-gradient(900px 480px at 18% 84%, rgba(184, 241, 255, 0.12), transparent 72%),
+    linear-gradient(140deg, #102a38, #071018 62%, #0c2431);
 }
 
 html[data-theme="light"] .hero-media {
   background:
-    radial-gradient(1200px 520px at 78% 18%, rgba(15, 111, 132, 0.14), transparent 70%),
-    radial-gradient(900px 480px at 18% 84%, rgba(154, 111, 18, 0.18), transparent 72%),
-    linear-gradient(140deg, #e6e2cf, #f4f0e4 62%, #efe4c8);
+    radial-gradient(1200px 520px at 78% 18%, rgba(7, 110, 139, 0.14), transparent 70%),
+    radial-gradient(900px 480px at 18% 84%, rgba(184, 241, 255, 0.5), transparent 72%),
+    linear-gradient(140deg, #d9f0f6, #edf8fb 62%, #dff3f7);
 }
 
 .hero-media img {
@@ -331,14 +331,14 @@ html[data-theme="light"] .hero-media {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, rgba(6, 8, 5, 0.92), rgba(6, 8, 5, 0.72) 42%, rgba(6, 8, 5, 0.28)),
-    linear-gradient(0deg, rgba(6, 8, 5, 0.95), rgba(6, 8, 5, 0.2) 55%, rgba(6, 8, 5, 0.45));
+    linear-gradient(90deg, rgba(7, 16, 24, 0.92), rgba(7, 16, 24, 0.72) 42%, rgba(7, 16, 24, 0.28)),
+    linear-gradient(0deg, rgba(7, 16, 24, 0.95), rgba(7, 16, 24, 0.2) 55%, rgba(7, 16, 24, 0.45));
 }
 
 html[data-theme="light"] .hero-shade {
   background:
-    linear-gradient(90deg, rgba(244, 240, 228, 0.95), rgba(244, 240, 228, 0.78) 44%, rgba(244, 240, 228, 0.4)),
-    linear-gradient(0deg, rgba(244, 240, 228, 0.96), rgba(244, 240, 228, 0.3) 55%, rgba(244, 240, 228, 0.5));
+    linear-gradient(90deg, rgba(237, 248, 251, 0.95), rgba(237, 248, 251, 0.78) 44%, rgba(237, 248, 251, 0.4)),
+    linear-gradient(0deg, rgba(237, 248, 251, 0.96), rgba(237, 248, 251, 0.3) 55%, rgba(237, 248, 251, 0.5));
 }
 
 .hero-crystal {
@@ -348,8 +348,8 @@ html[data-theme="light"] .hero-shade {
   width: 120px;
   height: 120px;
   border-radius: 24px 8px 28px 10px;
-  background: linear-gradient(145deg, rgba(224, 179, 74, 0.35), rgba(78, 196, 217, 0.08));
-  border: 1px solid rgba(224, 179, 74, 0.35);
+  background: linear-gradient(145deg, rgba(184, 241, 255, 0.42), rgba(94, 209, 231, 0.08));
+  border: 1px solid rgba(184, 241, 255, 0.42);
   transform: rotate(18deg);
   pointer-events: none;
   z-index: -1;
@@ -362,7 +362,7 @@ html[data-theme="light"] .hero-shade {
 
 .eyebrow {
   margin: 0 0 8px;
-  color: var(--gold);
+  color: var(--ice);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -420,7 +420,7 @@ html[data-theme="light"] .hero-shade {
   padding: 18px 20px;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
-  background: linear-gradient(120deg, color-mix(in srgb, var(--panel-2) 88%, #3a2a10), var(--panel));
+  background: linear-gradient(120deg, color-mix(in srgb, var(--panel-2) 88%, #153a4a), var(--panel));
   box-shadow: var(--shadow);
 }
 
@@ -517,7 +517,7 @@ html[data-theme="light"] .hero-shade {
 .fact-card {
   padding: 14px 14px 12px;
   border-radius: var(--radius-sm);
-  border-left: 3px solid var(--gold);
+  border-left: 3px solid var(--ice);
   background: linear-gradient(180deg, var(--panel), color-mix(in srgb, var(--panel-2) 70%, var(--panel)));
 }
 
@@ -535,7 +535,7 @@ html[data-theme="light"] .hero-shade {
   display: block;
   font-family: var(--font-display);
   font-size: 1.25rem;
-  color: var(--gold);
+  color: var(--ice);
   line-height: 1.2;
 }
 
@@ -574,14 +574,14 @@ html[data-theme="light"] .hero-shade {
 }
 
 .guide-link-grid a:hover {
-  border-color: var(--gold);
+  border-color: var(--ice);
   transform: translateY(-1px);
 }
 
 .guide-link-grid span {
   display: inline-block;
   margin-bottom: 6px;
-  color: var(--gold);
+  color: var(--ice);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -624,16 +624,16 @@ html[data-theme="light"] .hero-shade {
 }
 
 .news-card:hover {
-  border-left-color: var(--gold);
+  border-left-color: var(--ice);
 }
 
 .news-card[data-featured="true"] {
-  border-left-color: var(--gold);
+  border-left-color: var(--ice);
 }
 
 .news-date {
   font-family: var(--font-display);
-  color: var(--gold);
+  color: var(--ice);
   font-size: 0.9rem;
   line-height: 1.3;
   padding-top: 2px;
@@ -661,7 +661,7 @@ html[data-theme="light"] .hero-shade {
 }
 
 .news-body h3 a:hover {
-  color: var(--gold);
+  color: var(--ice);
 }
 
 .news-body p {
@@ -757,7 +757,7 @@ td {
 
 th {
   background: color-mix(in srgb, var(--panel-2) 80%, var(--panel));
-  color: var(--gold);
+  color: var(--ice);
   font-size: 0.84rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -795,7 +795,7 @@ tr:last-child td {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   background:
-    radial-gradient(600px 300px at 50% 40%, rgba(224, 179, 74, 0.14), transparent 70%),
+    radial-gradient(600px 300px at 50% 40%, rgba(184, 241, 255, 0.16), transparent 70%),
     linear-gradient(160deg, var(--panel-2), var(--panel));
   margin: 14px 0 18px;
   overflow: hidden;
@@ -831,7 +831,7 @@ tr:last-child td {
   width: 11px;
   height: 11px;
   border-radius: 999px;
-  background: var(--gold);
+  background: var(--ice);
   border: 2px solid var(--bg);
 }
 
@@ -880,12 +880,12 @@ tr:last-child td {
 }
 
 .next-grid a:hover {
-  border-color: var(--gold);
+  border-color: var(--ice);
 }
 
 .next-grid span {
   display: block;
-  color: var(--gold);
+  color: var(--ice);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -930,22 +930,22 @@ tr:last-child td {
   align-items: end;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(140deg, #121a13, #060805 60%, #1b1509);
+  background: linear-gradient(140deg, #102a38, #071018 60%, #0d2936);
 }
 
 .database-masthead-shade {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(0deg, rgba(6, 8, 5, 0.95), rgba(6, 8, 5, 0.35) 70%);
+  background: linear-gradient(0deg, rgba(7, 16, 24, 0.95), rgba(7, 16, 24, 0.35) 70%);
 }
 
 html[data-theme="light"] .database-masthead {
-  background: linear-gradient(140deg, #efe7d2, #fffdf6 60%, #f3ead3);
+  background: linear-gradient(140deg, #dff1f6, #f7fcfe 60%, #e4f5f8);
 }
 
 html[data-theme="light"] .database-masthead-shade {
-  background: linear-gradient(0deg, rgba(244, 240, 228, 0.95), rgba(244, 240, 228, 0.35) 70%);
+  background: linear-gradient(0deg, rgba(237, 248, 251, 0.95), rgba(237, 248, 251, 0.35) 70%);
 }
 
 .database-masthead-copy {
@@ -1026,7 +1026,7 @@ html[data-theme="light"] .database-masthead-shade {
 }
 
 .database-stat-strip strong {
-  color: var(--gold);
+  color: var(--ice);
   font-family: var(--font-display);
   font-size: 1.35rem;
 }
@@ -1085,7 +1085,7 @@ html[data-theme="light"] .database-masthead-shade {
 .database-controls output {
   min-width: 76px;
   padding-bottom: 8px;
-  color: var(--gold);
+  color: var(--ice);
   text-align: right;
   font-weight: 700;
 }
@@ -1124,7 +1124,7 @@ html[data-theme="light"] .database-masthead-shade {
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--bg) 80%, transparent);
-  color: var(--gold);
+  color: var(--ice);
   font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 700;
@@ -1179,13 +1179,13 @@ html[data-theme="light"] .database-masthead-shade {
 }
 
 .database-rarity.rarity-legendary {
-  color: var(--gold);
-  border-color: var(--gold-deep);
+  color: var(--ice);
+  border-color: var(--ice-deep);
 }
 
 .database-rarity.rarity-unique {
-  color: var(--ember);
-  border-color: color-mix(in srgb, var(--ember) 50%, var(--line));
+  color: var(--alert);
+  border-color: color-mix(in srgb, var(--alert) 50%, var(--line));
 }
 
 .database-sources {
@@ -1330,7 +1330,7 @@ html[data-theme="light"] .database-masthead-shade {
   .toc-panel strong {
     display: block;
     margin-bottom: 8px;
-    color: var(--gold);
+    color: var(--ice);
     font-size: 0.78rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1398,7 +1398,7 @@ html[data-theme="light"] .database-masthead-shade {
   .toc-panel strong {
     display: block;
     margin-bottom: 8px;
-    color: var(--gold);
+    color: var(--ice);
     font-size: 0.78rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1568,7 +1568,7 @@ html[data-theme="light"] .database-masthead-shade {
   color: var(--text);
   border-bottom-color: var(--line);
 }
-.leaflet-bar a:hover { background: var(--bg-elev); color: var(--gold); }
+.leaflet-bar a:hover { background: var(--bg-elev); color: var(--ice); }
 
 .map-pop-coord { color: var(--text-dim); font-size: 0.85rem; }
 .map-pop-check {
@@ -1611,7 +1611,7 @@ html[data-theme="light"] .database-masthead-shade {
 .map-error {
   margin: 0;
   padding: 24px;
-  color: var(--ember);
+  color: var(--alert);
   font-size: 0.95rem;
 }
 
