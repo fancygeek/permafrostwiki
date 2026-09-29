@@ -79,10 +79,11 @@
       ['guides', 'guides.html', 'Survival', '生存'],
       ['database', 'database.html', 'Library', '资料库'],
       ['patch', 'patch.html', 'Release', '发售'],
-      ['about', 'about.html', 'About', '关于']
+      ['about', 'about.html', 'About', '关于'],
+      ['steam', 'https://store.steampowered.com/app/2254990/Permafrost/', 'Steam Store', 'Steam 商店', true]
     ];
     html('[data-brand]', `<span class="brand-mark" aria-hidden="true">P</span><span><strong>PERMAFROST</strong><small>${t('GAME WIKI', '游戏 Wiki')}</small></span>`);
-    html('[data-nav]', nav.map(([id, href, en, zh]) => `<a href="${href}"${id === page ? ' data-active="true" aria-current="page"' : ''}>${t(en, zh)}</a>`).join(''));
+    html('[data-nav]', nav.map(([id, href, en, zh, external]) => `<a href="${href}"${external ? ' target="_blank" rel="noreferrer"' : ''}${id === page ? ' data-active="true" aria-current="page"' : ''}>${t(en, zh)}</a>`).join(''));
     html('[data-lang]', `<option value="en"${isZh() ? '' : ' selected'}>English</option><option value="zh"${isZh() ? ' selected' : ''}>中文</option>`);
     const language = document.querySelector('[data-lang]');
     if (language) language.addEventListener('change', () => {
@@ -90,7 +91,7 @@
       try { localStorage.setItem(LOCALE_KEY, locale); } catch (_) {}
       window.location.reload();
     });
-    html('[data-footer]', `<div><strong>PERMAFROST WIKI</strong><p>${t('Unofficial community reference for Permafrost.', '《永冻纪元 - Permafrost》非官方社区资料站。')}</p></div><nav aria-label="${t('Footer navigation', '页脚导航')}"><a href="about.html#sources">${t('Sources', '来源')}</a><a href="about.html#disclaimer">${t('Disclaimer', '免责声明')}</a></nav>`);
+    html('[data-footer]', `<div><strong>PERMAFROST WIKI</strong><p>${t('Unofficial community reference for Permafrost.', '《永冻纪元 - Permafrost》非官方社区资料站。')}</p></div><nav aria-label="${t('Footer navigation', '页脚导航')}"><a href="https://store.steampowered.com/app/2254990/Permafrost/" target="_blank" rel="noreferrer">${t('Steam Store', 'Steam 商店')}</a><a href="about.html#sources">${t('Sources', '来源')}</a><a href="about.html#disclaimer">${t('Disclaimer', '免责声明')}</a></nav>`);
 
     const toggle = document.querySelector('[data-nav-toggle]');
     if (toggle) toggle.textContent = t('Menu', '菜单');
