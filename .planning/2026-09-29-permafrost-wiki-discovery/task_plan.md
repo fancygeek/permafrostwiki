@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 6
+Phase 7
 
 ## Phases
 
@@ -39,8 +39,14 @@ Phase 6
 - [x] Confirm English-first, Chinese-supplement language policy
 - [x] Build multi-page navigation and 12 source-backed article routes
 - [x] Add language switching with no invented gameplay data
-- [ ] Verify, republish, and hand off updated Site
-- **Status:** in_progress
+- [x] Verify, republish, and hand off updated Site
+- **Status:** complete
+
+### Phase 7: Client-facing Content Review
+- [x] Remove internal validation language from visitor-facing copy
+- [x] Remove speculative map and planning UI
+- [x] Retain only source-linked game information and normal Wiki navigation
+- **Status:** complete
 
 ## Decisions Made
 | Decision | Rationale |
@@ -53,6 +59,7 @@ Phase 6
 | Make the generated artwork atmosphere-only | The hero contains no game claims; all factual material remains sourced in text links and status-marked entries. |
 | Default to English with an optional Chinese UI/content layer | User explicitly requested English as the primary language and Chinese as a multilingual supplement. |
 | Restrict articles to twelve first-party-supported topics | This gives the Wiki durable launch structure without asserting unpublished mechanics, numbers, or map data. |
+| Keep validation rules internal | The user’s no-invention requirement guides editing but is not content for visitors. |
 
 ## Errors Encountered
 | Error | Resolution |

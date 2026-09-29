@@ -20,6 +20,8 @@
 - Began the user-approved expansion to a default-English, multilingual Wiki. Reopened the existing private Site checkout; a refreshed source credential was required and obtained for the same Site.
 - Added six primary static Wiki pages, twelve source-backed article routes, a default-English / Chinese-supplement language control, library search and filters, the evidence-first map framework, and the existing expedition-planner capability.
 - Local preview for the updated library returned HTTP 200. Static verification confirmed JavaScript parses and that all twelve content records match their corresponding article routes.
+- Privately republished the expanded static Wiki to the existing Site and opened the current URL in the Codex panel. The local preview server was stopped after publication.
+- Removed visitor-facing internal-validation language and speculative utilities. The Atlas now links only to existing articles; the expedition planner was removed because it could produce gameplay advice beyond the published sources. Simplified article wording and kept English as the default UI language with Chinese as an optional toggle.
 
 ### Test Results
 | Test | Expected | Actual | Status |

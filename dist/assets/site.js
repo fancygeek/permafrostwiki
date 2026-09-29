@@ -1,74 +1,178 @@
 (() => {
   const wiki = window.PERMAFROST_WIKI;
   if (!wiki) return;
-  let locale = (() => { try { return localStorage.getItem('permafrost-locale') === 'zh' ? 'zh' : 'en'; } catch (_) { return 'en'; } })();
+
+  let locale = (() => {
+    try { return localStorage.getItem('permafrost-locale') === 'zh' ? 'zh' : 'en'; }
+    catch (_) { return 'en'; }
+  })();
+
   const page = document.body.dataset.page || 'home';
   const articleSlug = document.body.dataset.article;
   const isZh = () => locale === 'zh';
   const t = (en, zh) => isZh() ? zh : en;
   const read = (item, key) => isZh() ? item[`${key}Zh`] : item[key];
-  const source = (article) => wiki.sources[article.source];
   const route = (slug) => `/articles/${slug}.html`;
+  const source = (article) => wiki.sources[article.source];
   const sourceLabel = (article) => t(source(article).label, source(article).zh);
-  const status = (article) => article.planned ? t('Planned EA expansion', 'EA 计划扩充') : t('Official source', '官方来源');
-  const pageLabel = { home: ['Home', '首页'], guides: ['Survival', '生存'], world: ['World', '世界'], library: ['Library', '资料库'], map: ['Map', '地图'], updates: ['Updates', '更新'] };
-  const navItems = [ ['home', '/', 'Home', '首页'], ['guides', '/guides/', 'Survival', '生存'], ['world', '/world/', 'World & story', '世界与剧情'], ['library', '/library/', 'Library', '资料库'], ['map', '/map/', 'Map', '地图'], ['updates', '/updates/', 'Updates', '更新'] ];
+
+  const navigation = [
+    ['home', '/', 'Home', '首页'],
+    ['guides', '/guides/', 'Survival', '生存'],
+    ['world', '/world/', 'World & Story', '世界与剧情'],
+    ['library', '/library/', 'Library', '资料库'],
+    ['map', '/map/', 'Atlas', '地图集'],
+    ['updates', '/updates/', 'News', '公告']
+  ];
 
   function articleCard(article) {
-    return `<a class="card-link" href="${route(article.slug)}"><article class="card"><div class="card-top"><span class="category">${read(article, 'category')}</span><span class="status ${article.planned ? 'planned' : 'official'}">${status(article)}</span></div><h3>${read(article, 'title')}</h3><p>${read(article, 'lead')}</p><div class="card-footer"><span>${sourceLabel(article)}</span><span>${t('Pre-EA', 'EA 前')}</span></div></article></a>`;
+    return `<a class="card-link" href="${route(article.slug)}"><article class="card">
+      <div class="card-top"><span class="category">${read(article, 'category')}</span></div>
+      <h3>${read(article, 'title')}</h3><p>${read(article, 'lead')}</p>
+      <div class="card-footer"><span>${sourceLabel(article)}</span><span>${t('Read entry', '阅读条目')}</span></div>
+    </article></a>`;
   }
+
+  function sectionHead(eyebrow, title, copy) {
+    return `<div class="section-head"><div><p class="eyebrow">${eyebrow}</p><h2>${title}</h2></div><p>${copy}</p></div>`;
+  }
+
   function renderHeader() {
-    document.querySelector('#site-header').innerHTML = `<header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">✦</span><span>PERMAFROST<small>FIELD WIKI</small></span></a><nav class="nav" aria-label="${t('Primary navigation', '主导航')}">${navItems.map(([key, href, en, zh]) => `<a href="${href}" class="${page === key ? 'active' : ''}">${t(en, zh)}</a>`).join('')}</nav><button type="button" class="locale" id="locale-toggle" aria-label="${t('Switch to Chinese', '切换到英文')}">${isZh() ? 'EN' : '中文'}</button></div></header>`;
-    document.querySelector('#locale-toggle').addEventListener('click', () => { locale = isZh() ? 'en' : 'zh'; try { localStorage.setItem('permafrost-locale', locale); } catch (_) {} render(); });
+    document.querySelector('#site-header').innerHTML = `<header class="site-header"><div class="wrap header-inner">
+      <a class="brand" href="/"><span class="brand-mark">✦</span><span>PERMAFROST<small>FIELD WIKI</small></span></a>
+      <nav class="nav" aria-label="${t('Primary navigation', '主导航')}">${navigation.map(([key, href, en, zh]) => `<a href="${href}" class="${page === key ? 'active' : ''}">${t(en, zh)}</a>`).join('')}</nav>
+      <button type="button" class="locale" id="locale-toggle" aria-label="${t('Switch to Chinese', '切换到英文')}">${isZh() ? 'EN' : '中文'}</button>
+    </div></header>`;
+    document.querySelector('#locale-toggle').addEventListener('click', () => {
+      locale = isZh() ? 'en' : 'zh';
+      try { localStorage.setItem('permafrost-locale', locale); } catch (_) {}
+      render();
+    });
   }
+
   function renderFooter() {
-    document.querySelector('#site-footer').innerHTML = `<footer class="site-footer"><div class="wrap footer-inner"><span>${t('Unofficial community reference · Facts are linked to first-party sources.', '非官方社区资料站 · 每项事实均链接至第一方来源。')}</span><span>${t('English default · Chinese supplement', '英文默认 · 中文补充')}</span></div></footer>`;
+    document.querySelector('#site-footer').innerHTML = `<footer class="site-footer"><div class="wrap footer-inner">
+      <span>${t('Unofficial community field guide for Permafrost.', '《永冻纪元 - Permafrost》非官方社区野外手册。')}</span>
+      <span>${t('English · 中文', 'English · 中文')}</span>
+    </div></footer>`;
   }
-  function heading(eyebrow, title, text) { return `<div class="section-head"><div><p class="eyebrow">${eyebrow}</p><h2>${title}</h2></div><p>${text}</p></div>`; }
+
   function renderHome() {
-    const highlights = wiki.articles.filter((a) => ['early-access-release','cold-and-weather','shelter-network','canine-companion','rook-and-signal','early-access-scope'].includes(a.slug));
-    return `<section class="hero"><div class="wrap"><p class="eyebrow">${t('Verified field intelligence', '已核验的野外情报')}</p><h1>${t('Find what is known.<br><span>Mark what is not.</span>', '先找到已知事实。<br><span>再标注未知部分。</span>')}</h1><p class="hero-copy">${t('An English-first community reference for Permafrost. Every article below is limited to a first-party source, an announced version state, and a clear uncertainty boundary.', '这是一个英文默认的《永冻纪元 - Permafrost》社区资料站。每篇资料只记录第一方来源、已公布的版本状态和清晰的不确定性边界。')}</p><div class="meta-strip"><span class="meta-chip safe">${t('PC Early Access · 9 Oct 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</span><span class="meta-chip">${t('12 verified topics', '12 个已核验主题')}</span><span class="meta-chip">${t('Steam app 2254990', 'Steam 应用 2254990')}</span></div></div></section><main class="wrap"><section class="section">${heading(t('Start here','从这里开始'),t('Built for pre-release research','为发售前资料整理而建'),t('Read a verified topic, check its source, and know exactly where the public record ends.','阅读已核验主题、查看来源，并清楚了解公开信息的边界。'))}<div class="grid three"><a class="card-link" href="/guides/"><article class="card"><span class="category">${t('Survival','生存')}</span><h3>${t('Survival principles','生存原则')}</h3><p>${t('Cold, shelters, exploration and co-op — without unverified builds or quantities.','严寒、避难所、探索和合作；不填入未经核验的流派或数值。')}</p></article></a><a class="card-link" href="/world/"><article class="card"><span class="category">${t('World','世界')}</span><h3>${t('Setting and story','设定与剧情')}</h3><p>${t('Rook, the radio signal, The Shattering, predators, and factions.','Rook、无线电信号、The Shattering、掠食动物和势力。')}</p></article></a><a class="card-link" href="/library/"><article class="card"><span class="category">${t('Reference','资料')}</span><h3>${t('Browse all 12 topics','浏览全部 12 个主题')}</h3><p>${t('Filter entries and open the matching source for every summary.','筛选条目，并为每个摘要打开对应来源。')}</p></article></a></div></section><section class="section">${heading(t('Verified index','已核验索引'),t('The current public record','当前公开资料'),t('These entries are deliberately compact. They will expand only when a source or in-game evidence supports them.','这些条目刻意保持精简；只有来源或游戏内证据支持时才会扩展。'))}<div class="grid three">${highlights.map(articleCard).join('')}</div></section><section class="section"><div class="notice">${t('Pre-release boundary: this Wiki does not publish item statistics, recipes, map coordinates, quest steps, faction names, or combat behaviour until they can be verified.', '发售前边界：本 Wiki 不发布无法核验的物品数值、配方、地图坐标、任务步骤、势力名称或战斗行为。')}</div></section></main>`;
+    const featured = wiki.articles.filter((article) => ['early-access-release', 'cold-and-weather', 'shelter-network', 'canine-companion', 'rook-and-signal', 'early-access-scope'].includes(article.slug));
+    return `<section class="hero"><div class="wrap">
+      <p class="eyebrow">PERMAFROST FIELD WIKI</p>
+      <h1>PERMAFROST<br><span>WIKI</span></h1>
+      <p class="hero-copy">${t('Game information, story, survival systems, and official announcements.', '游戏资料、剧情、生存系统与官方公告。')}</p>
+      <div class="meta-strip"><span class="meta-chip safe">${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</span><span class="meta-chip">${t('1–4 player co-op', '1–4 人合作')}</span><span class="meta-chip">Steam</span></div>
+    </div></section>
+    <main class="wrap">
+      <section class="section">${sectionHead(t('Browse by topic', '按主题浏览'), t('Wiki sections', 'Wiki 分区'), t('Survival systems, world and story, and the full article library.', '生存系统、世界与剧情，以及完整条目库。'))}
+        <div class="grid three">
+          <a class="card-link" href="/guides/"><article class="card"><span class="category">${t('Survival', '生存')}</span><h3>${t('Survival field guide', '生存野外手册')}</h3><p>${t('Cold, shelter networks, exploration, companions, and co-op.', '严寒、避难所网络、探索、伙伴和合作。')}</p></article></a>
+          <a class="card-link" href="/world/"><article class="card"><span class="category">${t('World', '世界')}</span><h3>${t('World & story', '世界与剧情')}</h3><p>${t('Rook, the signal, The Shattering, predators, and factions.', 'Rook、信号、The Shattering、掠食动物和势力。')}</p></article></a>
+          <a class="card-link" href="/library/"><article class="card"><span class="category">${t('Library', '资料库')}</span><h3>${t('Browse the library', '浏览资料库')}</h3><p>${t('Explore current articles and official dispatches.', '浏览当前资料条目和官方动态。')}</p></article></a>
+        </div>
+      </section>
+      <section class="section">${sectionHead(t('Featured articles', '精选条目'), t('Featured articles', '精选条目'), t('A selection of current Permafrost reference articles.', '当前《永冻纪元 - Permafrost》资料条目精选。'))}<div class="grid three">${featured.map(articleCard).join('')}</div></section>
+    </main>`;
   }
+
   function renderGuides() {
-    const articles = wiki.articles.filter((a) => ['cold-and-weather','shelter-network','exploration-progression','canine-companion','co-op-survival'].includes(a.slug));
-    return `<main class="wrap"><section class="section">${heading(t('Survival','生存'),t('Verified survival principles','已核验的生存原则'),t('This page deliberately avoids build advice, consumable values, and route claims until release evidence exists.','本页刻意不提供流派建议、消耗品数值或路线判断，直至发售后有证据为止。'))}<div class="grid three">${articles.map(articleCard).join('')}</div></section><section class="section"><div class="grid two"><article class="card"><p class="eyebrow">${t('Expedition prep','远征预备')}</p><h3>${t('Co-op preparation prompt','合作预备提示')}</h3><p>${t('Choose a group size and a stated risk level. The result is a planning prompt, not a game-stat calculation.','选择队伍规模和已公开的风险等级。结果是一份规划提示，而不是游戏数值计算。')}</p><div class="form-grid" style="margin-top:18px"><select id="team-size" aria-label="${t('Team size','队伍规模')}"><option value="1">${t('Solo','单人')}</option><option value="2">${t('Two players','双人')}</option><option value="4">${t('Four players','四人')}</option></select><select id="route-risk" aria-label="${t('Route condition','路线条件')}"><option value="shelter">${t('Known shelter route','已知避难所路线')}</option><option value="cold">${t('Cold zone','危险冷区')}</option></select><button class="primary" id="plan-button">${t('Create prompt','生成提示')}</button></div><div class="plan-output" id="plan-output">${t('This uses only officially described systems: cold, shelters, a canine companion, and cooperative responsibilities.','此工具只使用官方已描述的系统：严寒、避难所、犬类伙伴和合作分工。')}</div></article><article class="card"><p class="eyebrow">${t('Data policy','数据策略')}</p><h3>${t('Recipe tools wait for recipes','材料工具等待配方')}</h3><p>${t('The public store page mentions hundreds of items, blueprints, and recipes, but it does not publish their relationships. A crafting calculator remains intentionally unavailable until those data can be cited.','公开商店页提到数百种物品、蓝图和配方，但并未公开它们之间的关系。在能够引用这些数据前，材料计算器将刻意保持不可用。')}</p></article></div></section></main>`;
+    const articles = wiki.articles.filter((article) => ['cold-and-weather', 'shelter-network', 'exploration-progression', 'canine-companion', 'co-op-survival'].includes(article.slug));
+    return `<main class="wrap"><section class="section">${sectionHead(t('Survival', '生存'), t('Survival systems', '生存系统'), t('Cold, shelters, exploration, companions, and co-op.', '严寒、避难所、探索、伙伴与合作。'))}<div class="grid three">${articles.map(articleCard).join('')}</div></section></main>`;
   }
+
   function renderWorld() {
-    const articles = wiki.articles.filter((a) => ['rook-and-signal','the-shattering','predators','hostile-factions'].includes(a.slug));
-    return `<main class="wrap"><section class="section">${heading(t('World & story','世界与剧情'),t('What has been said about the frozen world','关于冰封世界的公开资料'),t('Story information is source-linked and intentionally avoids unannounced spoilers.','剧情信息均已链接来源，并刻意避免未公布的剧透。'))}<div class="grid two">${articles.map(articleCard).join('')}</div></section><section class="section"><div class="notice">${t('Spoiler policy: this pre-release reference records only the premise and named concepts that appear in official store copy or announcements.','剧透政策：本发售前资料站只记录出现在官方商店文案或公告中的前提和已命名概念。')}</div></section></main>`;
+    const articles = wiki.articles.filter((article) => ['rook-and-signal', 'the-shattering', 'predators', 'hostile-factions'].includes(article.slug));
+    return `<main class="wrap"><section class="section">${sectionHead(t('World & story', '世界与剧情'), t('World & story', '世界与剧情'), t('Rook, The Shattering, predators, and hostile factions.', 'Rook、The Shattering、掠食动物和敌对势力。'))}<div class="grid two">${articles.map(articleCard).join('')}</div></section></main>`;
   }
+
   function renderLibrary() {
-    return `<main class="wrap"><section class="section">${heading(t('Library','资料库'),t('12 source-backed articles','12 篇有来源支持的资料'),t('Search by topic, then open the source cited by that entry.','按主题搜索，然后打开该条目引用的来源。'))}<div class="search-row"><label class="sr-only" for="library-search">${t('Search the library','搜索资料库')}</label><input id="library-search" type="search" placeholder="${t('Search cold, Rook, co-op, Early Access…','搜索严寒、Rook、合作、抢先体验…')}" autocomplete="off"></div><div class="filter-row" id="category-filters"></div><div class="grid three" id="article-grid"></div><p class="empty" id="empty-state">${t('No verified entry matches that search.','没有与搜索匹配的已核验条目。')}</p></section></main>`;
+    return `<main class="wrap"><section class="section">${sectionHead(t('Library', '资料库'), t('All articles', '全部条目'), t('Browse the current Permafrost article library.', '浏览当前《永冻纪元 - Permafrost》资料库。'))}
+      <div class="search-row"><label class="sr-only" for="library-search">${t('Search the library', '搜索资料库')}</label><input id="library-search" type="search" placeholder="${t('Search cold, Rook, co-op, Early Access…', '搜索严寒、Rook、合作、抢先体验…')}" autocomplete="off"></div>
+      <div class="filter-row" id="category-filters"></div><div class="grid three" id="article-grid"></div><p class="empty" id="empty-state">${t('No matching entry.', '没有匹配的条目。')}</p>
+    </section></main>`;
   }
+
   function renderMap() {
-    return `<main class="wrap"><section class="section">${heading(t('Map','地图'),t('An annotation framework, not a made-up map','注释框架，而不是虚构地图'),t('The game’s real geography and coordinates are not yet published here. This prototype shows how evidence-backed layers will work after launch.','游戏的真实地理和坐标尚未在这里公开。这个原型展示了发售后基于证据的图层将如何工作。'))}<div class="map-board" aria-label="${t('Illustrative map-layer prototype','示意地图图层原型')}"><span class="pin shelter" data-pin="shelter" aria-label="${t('Shelter marker','避难所标记')}"></span><span class="pin machine" data-pin="machine" aria-label="${t('Machine marker','机器标记')}"></span><span class="pin hazard" data-pin="hazard" aria-label="${t('Cold-zone marker','冷区标记')}"></span><div class="map-controls" role="group" aria-label="${t('Map layers','地图图层')}"><button class="filter active" data-map="all">${t('All layers','全部图层')}</button><button class="filter" data-map="shelter">${t('Shelters','避难所')}</button><button class="filter" data-map="machine">${t('Machines','机器')}</button><button class="filter" data-map="hazard">${t('Cold zones','危险冷区')}</button></div></div></section><section class="section"><div class="grid three"><article class="card"><span class="category">01 / Evidence</span><h3>${t('A source is required','必须提供来源')}</h3><p>${t('Every future point needs a source, an image or video reference, and a version field.','未来每个点位都需要来源、图片或视频依据，以及版本字段。')}</p></article><article class="card"><span class="category">02 / State</span><h3>${t('No coordinates yet','暂不填写坐标')}</h3><p>${t('The markers above are interface examples only and do not represent real locations.','上方标记仅为界面示例，不代表真实地点。')}</p></article><article class="card"><span class="category">03 / Change</span><h3>${t('Patches can retire points','补丁可淘汰点位')}</h3><p>${t('Each future annotation will keep its version and verification date when the world changes.','当世界发生变化时，未来每条注释都会保留版本和核验日期。')}</p></article></div></section></main>`;
+    const articles = wiki.articles.filter((article) => ['shelter-network', 'exploration-progression', 'cold-and-weather'].includes(article.slug));
+    return `<main class="wrap"><section class="section">${sectionHead(t('Atlas', '地图集'), t('World reference', '世界资料'), t('Articles on shelters, exploration, and weather.', '关于避难所、探索与天气的条目。'))}<div class="grid three">${articles.map(articleCard).join('')}</div></section></main>`;
   }
+
   function renderUpdates() {
     const entries = [
-      ['2026.07.24', 'deepDive', 'The frozen-world deep dive', '冰封世界深度介绍', 'The official announcement discusses The Shattering, cold zones, predators, and hostile factions.', '官方公告讨论了 The Shattering、冷区、掠食动物和敌对势力。'],
-      ['2026.07.17', 'release', 'Early Access date moved to 9 October 2026', '抢先体验日期调整至 2026 年 10 月 9 日', 'The official release notice confirms the PC Early Access date and storefronts.', '官方发售公告确认了 PC 抢先体验日期和商店平台。'],
-      ['PRE-EA', 'steam', 'Store-page Early Access scope', '商店页的抢先体验范围', 'The developer outlines current foundations and planned growth during Early Access.', '开发者概述了当前基础内容和抢先体验期间的扩展方向。']
+      ['2026.07.24', 'deepDive', 'The frozen-world deep dive', '冰封世界深度介绍', 'A look into The Shattering, cold zones, predators, and hostile factions.', '深入了解 The Shattering、冷区、掠食动物和敌对势力。'],
+      ['2026.07.17', 'release', 'Early Access arrives 9 October 2026', '抢先体验将于 2026 年 10 月 9 日开启', 'Permafrost is scheduled to enter PC Early Access on 9 October 2026.', '《永冻纪元 - Permafrost》计划于 2026 年 10 月 9 日开启 PC 抢先体验。'],
+      ['EARLY ACCESS', 'steam', 'Early Access plans', '抢先体验计划', 'The Steam page lists biomes, quests, mechanics, quality-of-life features, and technical optimisation as planned additions.', 'Steam 商店页将生物群系、任务、机制、体验优化和技术优化列为计划加入的内容。']
     ];
-    return `<main class="wrap"><section class="section">${heading(t('Updates','更新'),t('Source log','来源记录'),t('This is a traceable log of first-party public material, not a prediction feed.','这是可追溯的第一方公开资料记录，不是预测动态。'))}<div class="grid three">${entries.map(([date,key,enTitle,zhTitle,enText,zhText]) => `<article class="card update"><time>${date} · ${t('OFFICIAL','官方')}</time><h3>${t(enTitle,zhTitle)}</h3><p>${t(enText,zhText)}</p><a href="${wiki.sources[key].url}" target="_blank" rel="noreferrer">${t('Open source','打开来源')}</a></article>`).join('')}</div></section><section class="section"><div class="notice">${t('After release, patch notes will link to affected library pages. Until then, no balance change, item stat, or bug report is treated as a verified entry.','发售后，补丁说明将链接到受影响的资料页。在此之前，任何平衡性改动、物品数值或 Bug 报告都不会被视为已核验条目。')}</div></section></main>`;
+    return `<main class="wrap"><section class="section">${sectionHead(t('Announcements', '公告'), t('Official announcements', '官方公告'), t('Recent news and release information for Permafrost.', '《永冻纪元 - Permafrost》的近期新闻与发售信息。'))}<div class="grid three">${entries.map(([date, key, enTitle, zhTitle, enText, zhText]) => `<article class="card update"><time>${date}</time><h3>${t(enTitle, zhTitle)}</h3><p>${t(enText, zhText)}</p><a href="${wiki.sources[key].url}" target="_blank" rel="noreferrer">${t('Read announcement', '阅读公告')}</a></article>`).join('')}</div></section></main>`;
   }
+
   function renderArticle() {
     const article = wiki.articles.find((item) => item.slug === articleSlug);
-    if (!article) return `<main class="wrap"><section class="section"><h1>${t('Article not found','未找到条目')}</h1></section></main>`;
-    const src = source(article);
-    return `<main class="wrap"><div class="article-layout"><article class="article"><p class="eyebrow">${read(article,'category')} · ${t('PRE-EA RECORD','EA 前记录')}</p><h1>${read(article,'title')}</h1><p class="lead">${read(article,'lead')}</p><div class="meta-strip"><span class="meta-chip safe">${status(article)}</span><span class="meta-chip">${t('Last checked: 29 Sep 2026','最后核验：2026 年 9 月 29 日')}</span></div><h2>${t('What is confirmed','已确认内容')}</h2><ul class="fact-list">${(isZh() ? article.factsZh : article.facts).map((fact) => `<li>${fact}</li>`).join('')}</ul><div class="notice">${t('This article stops at the public record. It does not add mechanics, values, locations, names, or conclusions that have not been verified.', '本条目止于公开资料；不会补充未经核验的机制、数值、地点、名称或结论。')}</div><div class="source-box"><p class="eyebrow">${t('Primary source','第一方来源')}</p><h2>${t('Read the original source','阅读原始来源')}</h2><p>${t('This article is based on:', '本条目基于：')} <a href="${src.url}" target="_blank" rel="noreferrer">${t(src.label,src.zh)}</a></p></div></article><aside class="aside"><h3>${t('Article status','条目状态')}</h3><p>${status(article)}</p><h3>${t('Related articles','相关条目')}</h3><ul class="side-list">${wiki.articles.filter((item) => item.slug !== article.slug && item.category === article.category).slice(0,4).map((item) => `<li><a href="${route(item.slug)}">${read(item,'title')}</a></li>`).join('') || `<li>${t('No same-category entry yet.','尚无同分类条目。')}</li>`}</ul><a href="/library/">${t('Browse the library','浏览资料库')}</a></aside></div></main>`;
+    if (!article) return `<main class="wrap"><section class="section"><h1>${t('Article not found', '未找到条目')}</h1></section></main>`;
+    const articleSource = source(article);
+    const related = wiki.articles.filter((item) => item.slug !== article.slug && item.category === article.category).slice(0, 4);
+    return `<main class="wrap"><div class="article-layout"><article class="article">
+      <p class="eyebrow">${read(article, 'category')}</p><h1>${read(article, 'title')}</h1><p class="lead">${read(article, 'lead')}</p>
+      <h2>${t('Overview', '概览')}</h2><ul class="fact-list">${(isZh() ? article.factsZh : article.facts).map((fact) => `<li>${fact}</li>`).join('')}</ul>
+      <div class="source-box"><p class="eyebrow">${t('Source', '来源')}</p><p><a href="${articleSource.url}" target="_blank" rel="noreferrer">${t(articleSource.label, articleSource.zh)}</a></p></div>
+    </article><aside class="aside"><h3>${t('Related reading', '相关阅读')}</h3><ul class="side-list">${related.map((item) => `<li><a href="${route(item.slug)}">${read(item, 'title')}</a></li>`).join('')}</ul><a href="/library/">${t('Browse library', '浏览资料库')}</a></aside></div></main>`;
   }
+
   function wireLibrary() {
-    const grid = document.querySelector('#article-grid'); if (!grid) return;
-    const search = document.querySelector('#library-search'); const filters = document.querySelector('#category-filters'); const empty = document.querySelector('#empty-state'); let active = 'all';
-    const categories = ['all', ...new Set(wiki.articles.map((a) => a.category))];
-    filters.innerHTML = categories.map((category) => `<button class="filter ${category === 'all' ? 'active' : ''}" data-category="${category}">${category === 'all' ? t('All topics','全部主题') : t(category[0].toUpperCase() + category.slice(1), wiki.articles.find((a) => a.category === category).categoryZh)}</button>`).join('');
-    function update() { const query = search.value.trim().toLowerCase(); const entries = wiki.articles.filter((article) => (active === 'all' || article.category === active) && `${article.title} ${article.titleZh} ${article.lead} ${article.leadZh}`.toLowerCase().includes(query)); grid.innerHTML = entries.map(articleCard).join(''); empty.classList.toggle('show', entries.length === 0); }
-    filters.addEventListener('click', (event) => { const button = event.target.closest('[data-category]'); if (!button) return; active = button.dataset.category; filters.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item === button)); update(); }); search.addEventListener('input', update); update();
+    const grid = document.querySelector('#article-grid');
+    if (!grid) return;
+    const search = document.querySelector('#library-search');
+    const filters = document.querySelector('#category-filters');
+    const empty = document.querySelector('#empty-state');
+    let active = 'all';
+    const categories = ['all', ...new Set(wiki.articles.map((article) => article.category))];
+    filters.innerHTML = categories.map((category) => `<button class="filter ${category === 'all' ? 'active' : ''}" data-category="${category}">${category === 'all' ? t('All topics', '全部主题') : t(category[0].toUpperCase() + category.slice(1), wiki.articles.find((article) => article.category === category).categoryZh)}</button>`).join('');
+    const update = () => {
+      const query = search.value.trim().toLowerCase();
+      const matches = wiki.articles.filter((article) => (active === 'all' || article.category === active) && `${article.title} ${article.titleZh} ${article.lead} ${article.leadZh}`.toLowerCase().includes(query));
+      grid.innerHTML = matches.map(articleCard).join('');
+      empty.classList.toggle('show', matches.length === 0);
+    };
+    filters.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-category]');
+      if (!button) return;
+      active = button.dataset.category;
+      filters.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item === button));
+      update();
+    });
+    search.addEventListener('input', update);
+    update();
     const context = document.modelContext;
-    if (context?.registerTool) { try { void Promise.resolve(context.registerTool({ name: 'search_permafrost_wiki', title: 'Search Permafrost Wiki', description: 'Filters the visible verified-article library by a topic keyword.', inputSchema: { type: 'object', properties: { query: { type: 'string', minLength: 1 } }, required: ['query'], additionalProperties: false }, annotations: { readOnlyHint: true, untrustedContentHint: false }, execute(input) { if (!input || typeof input.query !== 'string' || !input.query.trim()) throw new Error('query must be non-empty'); active = 'all'; search.value = input.query.trim(); filters.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item.dataset.category === 'all')); update(); const count = grid.querySelectorAll('.card').length; return { query: search.value, result_count: count }; } })).catch(() => {}); } catch (_) {} }
+    if (context?.registerTool) {
+      try {
+        void Promise.resolve(context.registerTool({
+          name: 'search_permafrost_wiki', title: 'Search Permafrost Wiki',
+          description: 'Filters the visible Permafrost article library by a topic keyword.',
+          inputSchema: { type: 'object', properties: { query: { type: 'string', minLength: 1 } }, required: ['query'], additionalProperties: false },
+          annotations: { readOnlyHint: true, untrustedContentHint: false },
+          execute(input) {
+            if (!input || typeof input.query !== 'string' || !input.query.trim()) throw new Error('query must be non-empty');
+            active = 'all'; search.value = input.query.trim();
+            filters.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item.dataset.category === 'all'));
+            update();
+            return { query: search.value, result_count: grid.querySelectorAll('.card').length };
+          }
+        })).catch(() => {});
+      } catch (_) {}
+    }
   }
-  function wireMap() { const controls = document.querySelector('.map-controls'); if (!controls) return; const pins = [...document.querySelectorAll('.pin')]; controls.addEventListener('click', (event) => { const button = event.target.closest('[data-map]'); if (!button) return; const category = button.dataset.map; controls.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item === button)); pins.forEach((pin) => pin.classList.toggle('hidden', category !== 'all' && !pin.classList.contains(category))); }); }
-  function wirePlanner() { const button = document.querySelector('#plan-button'); if (!button) return; button.addEventListener('click', () => { const team = Number(document.querySelector('#team-size').value); const cold = document.querySelector('#route-risk').value === 'cold'; const output = document.querySelector('#plan-output'); const roles = team === 1 ? t('Solo: keep route, supplies, and a return point in one written plan.', '单人：把路线、物资和返程点写入同一份行动计划。') : team === 2 ? t('Two players: split route awareness from supplies and shelter responsibilities.', '双人：分开负责路线感知，以及物资和庇护责任。') : t('Four players: divide route awareness, supplies, repair, and watch duties.', '四人：划分路线感知、物资、修复和警戒职责。'); const priorities = cold ? [t('Set the nearest shelter as a return point.', '把最近的避难所设为返程点。'),t('Treat preparation, shelter, and timing as the priority.', '把准备、庇护和时机视为首要事项。'),t('Use the companion’s scouting role before pushing forward.', '在继续深入前使用伙伴的侦察职责。'),t('Retreat when weather conditions worsen.', '天气恶化时撤退。')] : [t('Confirm the stated shelter destination.', '确认已说明的避难所目的地。'),t('Plan supplies around repair and shelter needs.', '围绕修复和庇护需求规划物资。'),t('Record a return point before leaving the network.', '离开网络前记录返程点。'),t('Assign responsibilities before departure.', '出发前分配职责。')]; output.classList.add('ready'); output.innerHTML = `<strong>${roles}</strong><div class="plan-items">${priorities.map((item) => `<span class="plan-item">${item}</span>`).join('')}</div>`; }); }
-  function render() { document.documentElement.lang = locale; document.title = isZh() ? '永冻纪元 - Permafrost | Field Wiki' : 'Permafrost | Field Wiki'; renderHeader(); renderFooter(); const app = document.querySelector('#app'); app.innerHTML = page === 'home' ? renderHome() : page === 'guides' ? renderGuides() : page === 'world' ? renderWorld() : page === 'library' ? renderLibrary() : page === 'map' ? renderMap() : page === 'updates' ? renderUpdates() : page === 'article' ? renderArticle() : renderHome(); wireLibrary(); wireMap(); wirePlanner(); }
+
+  function render() {
+    document.documentElement.lang = locale;
+    const currentArticle = page === 'article' ? wiki.articles.find((item) => item.slug === articleSlug) : null;
+    document.title = currentArticle ? `${read(currentArticle, 'title')} | Permafrost Field Wiki` : isZh() ? '永冻纪元 - Permafrost | Field Wiki' : 'Permafrost | Field Wiki';
+    renderHeader(); renderFooter();
+    const app = document.querySelector('#app');
+    app.innerHTML = page === 'home' ? renderHome() : page === 'guides' ? renderGuides() : page === 'world' ? renderWorld() : page === 'library' ? renderLibrary() : page === 'map' ? renderMap() : page === 'updates' ? renderUpdates() : page === 'article' ? renderArticle() : renderHome();
+    wireLibrary();
+  }
+
   render();
 })();
