@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 10
+Phase 11
 
 ## Phases
 
@@ -67,6 +67,12 @@ Phase 10
 - [x] Increase type scale and content width where the current template is too sparse
 - [x] Resize and recompose guide-video modules for useful viewing size
 - [ ] Verify dark/light themes, every page family, and publish the update
+- **Status:** in progress
+
+### Phase 11: Search-Engine Foundations
+- [x] Add indexable, keyword-focused page titles and descriptions for `Permafrost Wiki` and `Permafrost Guide`
+- [x] Add canonical URLs, social metadata, structured data, robots, and sitemap coverage
+- [ ] Check every HTML route for SEO metadata and publish the update
 - **Status:** in progress
 
 ## Decisions Made

@@ -133,7 +133,7 @@
   }
 
   function renderHome() {
-    html('[data-hero]', `<p class="eyebrow">PERMAFROST</p><h1>${t('Permafrost game Wiki', '《永冻纪元 - Permafrost》游戏 Wiki')}</h1><p class="hero-intro">${t('Game information, story, survival systems, and official announcements.', '游戏资料、剧情、生存系统与官方公告。')}</p><div class="hero-actions"><a class="button primary" href="database.html">${t('Browse library', '浏览资料库')}</a><a class="button secondary" href="news.html">${t('Official news', '官方公告')}</a></div><div class="hero-facts"><span>${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</span><span>${t('1–4 player co-op', '1–4 人合作')}</span><span>Steam</span></div>`);
+    html('[data-hero]', `<p class="eyebrow">PERMAFROST</p><h1>${t('Permafrost Wiki & Guide', '《永冻纪元 - Permafrost》游戏 Wiki')}</h1><p class="hero-intro">${t('Game information, story, survival systems, and official announcements.', '游戏资料、剧情、生存系统与官方公告。')}</p><div class="hero-actions"><a class="button primary" href="database.html">${t('Browse library', '浏览资料库')}</a><a class="button secondary" href="news.html">${t('Official news', '官方公告')}</a></div><div class="hero-facts"><span>${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</span><span>${t('1–4 player co-op', '1–4 人合作')}</span><span>Steam</span></div>`);
     html('[data-status]', `<div class="status-copy"><p class="eyebrow">${t('Release', '发售')}</p><h2>${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</h2><p>${t('Steam, GOG.com, and the Epic Games Store are named as PC storefronts.', 'Steam、GOG.com 和 Epic Games Store 被列为 PC 平台。')}</p></div><div class="status-pills"><a class="pill link" href="patch.html">${t('Release details', '发售信息')}</a></div>`);
     const facts = [
       [t('Game', '游戏'), 'Permafrost', t('Story-driven survival sandbox', '剧情驱动的生存沙盒')],
@@ -183,7 +183,7 @@
   }
 
   function renderGuides() {
-    html('[data-page-heading]', pageHead(t('Survival', '生存'), t('Survival systems', '生存系统'), t('Cold, shelters, exploration, companions, and co-op.', '严寒、避难所、探索、伙伴与合作。')));
+    html('[data-page-heading]', pageHead(t('Survival', '生存'), t('Permafrost Guide: Survival systems', '《永冻纪元 - Permafrost》生存指南'), t('Cold, shelters, exploration, companions, and co-op.', '严寒、避难所、探索、伙伴与合作。')));
     const groups = [
       ['getting-started', 'Survival', '生存', 'First steps', '入门指南', ['essential-tools', 'preparing-for-expedition', 'survival-basics']],
       ['cold', 'Survival', '生存', 'Cold and weather', '严寒与天气', ['cold-and-weather', 'survival-hazards']],
@@ -198,7 +198,7 @@
   }
 
   function renderLibrary() {
-    html('[data-page-heading]', pageHead(t('Library', '资料库'), t('Permafrost library', '《永冻纪元 - Permafrost》资料库'), t('Search the current article collection by category or keyword.', '按分类或关键词搜索当前条目。')));
+    html('[data-page-heading]', pageHead(t('Library', '资料库'), t('Permafrost Wiki Library', '《永冻纪元 - Permafrost》资料库'), t('Search the current article collection by category or keyword.', '按分类或关键词搜索当前条目。')));
     const categories = [...new Set(D.articles.map((article) => article.category))];
     html('[data-library]', `<div class="database-tabs"><div class="container" data-library-tabs role="group" aria-label="${t('Category filter', '分类筛选')}"></div></div><article class="article container"><div class="database-stat-strip" data-library-stats></div><section class="content-section" id="entries"><div class="database-controls"><label><span>${t('Search', '搜索')}</span><input type="search" data-library-search placeholder="${t('Title, description, or topic', '标题、描述或主题')}" /></label><output data-library-count aria-live="polite"></output></div><div class="database-grid" data-library-grid></div><p class="database-empty" data-library-empty hidden>${t('No matching article.', '没有匹配的条目。')}</p></section></article>`);
     const labels = new Map(D.articles.map((article) => [article.category, read(article, 'category')]));

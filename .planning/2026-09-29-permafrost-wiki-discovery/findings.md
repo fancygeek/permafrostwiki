@@ -48,6 +48,12 @@
 - Accessibility checks on the updated Guide page show all visible video modules as nested YouTube player frames with in-page play controls. The article-family player is now eager-loaded (there is at most one per article) so its direct-player frame is prepared without relying on a later scroll event.
 - Computed-layout QA confirms the responsive template player is 597×336px at a narrow 646px viewport, while the Field Wiki article player is 817×460px at a 1280px desktop viewport. The two original small-card failure modes are therefore removed in both page families.
 
+## 2026-09-30 SEO Findings
+
+- The 27 static HTML routes have descriptions and titles but no canonical links, Open Graph/Twitter metadata, JSON-LD, `robots.txt`, or `sitemap.xml`.
+- The durable target terms are `Permafrost Wiki` (site-wide) and `Permafrost Guide` (survival/guide routes). They will appear naturally in titles, descriptions, guide-page headings, and structured data—not through repetitive keyword copy.
+- The canonical production origin is `https://permafrostwiki.com`; the private Sites URL must not be used as a canonical source.
+
 ## Resources
 - First-party release announcement: https://www.toplitz-productions.com/news-2388/release-date-for-the-frozen-apocalypse-is-moved-to-october-9-2026.html?page_n167=2
 - First-party Gamescom trailer announcement: https://www.toplitz-productions.com/news-2388/permafrost-unleashes-the-frozen-apocalypse-in-new-gamescom-trailer.html?page_n167=11

@@ -49,7 +49,7 @@
     if (document.querySelector('#field-scale-styles')) return;
     const style = document.createElement('style');
     style.id = 'field-scale-styles';
-    style.textContent = `:root{--max:1240px}body{font-size:17px;line-height:1.65}.section{margin-top:72px}.section-head{gap:32px;margin-bottom:26px}.section-head p{max-width:540px;font-size:1rem}.card{padding:24px}.card h3{margin:13px 0 9px;font-size:1.26rem;line-height:1.28}.card p{font-size:1rem;line-height:1.62}.card-footer{margin-top:22px;font-size:.78rem}.article-layout{grid-template-columns:minmax(0,880px) 300px;gap:54px}.article{max-width:880px}.article .lead{font-size:1.2rem;line-height:1.65}.article h2{margin:42px 0 14px;font-size:1.6rem}.fact-list{gap:12px;margin:18px 0}.fact-list li{padding:10px 0 10px 15px;font-size:1.03rem;line-height:1.62}.aside{width:300px}.side-list li{padding:12px 0;font-size:.94rem}@media(max-width:850px){.article-layout{grid-template-columns:1fr}.aside{width:auto}}@media(max-width:520px){body{font-size:16px}.section{margin-top:48px}.card{padding:19px}.card h3{font-size:1.16rem}.section-head p,.card p{font-size:.98rem}.article .lead{font-size:1.1rem}.article h2{font-size:1.42rem}}`;
+    style.textContent = `:root{--max:1240px}body{font-size:17px;line-height:1.65}.section{margin-top:72px}.section-head{gap:32px;margin-bottom:26px}.section-head p{max-width:540px;font-size:1rem}.page-title{margin:6px 0 12px;font-size:clamp(2.25rem,5vw,4rem);line-height:1;letter-spacing:-.055em}.card{padding:24px}.card h3{margin:13px 0 9px;font-size:1.26rem;line-height:1.28}.card p{font-size:1rem;line-height:1.62}.card-footer{margin-top:22px;font-size:.78rem}.article-layout{grid-template-columns:minmax(0,880px) 300px;gap:54px}.article{max-width:880px}.article .lead{font-size:1.2rem;line-height:1.65}.article h2{margin:42px 0 14px;font-size:1.6rem}.fact-list{gap:12px;margin:18px 0}.fact-list li{padding:10px 0 10px 15px;font-size:1.03rem;line-height:1.62}.aside{width:300px}.side-list li{padding:12px 0;font-size:.94rem}@media(max-width:850px){.article-layout{grid-template-columns:1fr}.aside{width:auto}}@media(max-width:520px){body{font-size:16px}.section{margin-top:48px}.page-title{font-size:2.45rem}.card{padding:19px}.card h3{font-size:1.16rem}.section-head p,.card p{font-size:.98rem}.article .lead{font-size:1.1rem}.article h2{font-size:1.42rem}}`;
     document.head.append(style);
   }
 
@@ -106,7 +106,7 @@
       ['Weather, shelter & safety', '天气、避难所与安全', 'Surviving the wilderness', '荒野生存', 'Prepare for cold weather, manage hazards, and plan longer journeys.', '为严寒做准备、应对威胁，并规划更长的行程。', ['cold-and-weather', 'survival-hazards', 'shelter-network', 'exploration-progression']],
       ['Companions & co-op', '伙伴与合作', 'Travel together', '结伴同行', 'Travel with the dog companion or survive with a group.', '与狗狗伙伴同行，或与队友一起生存。', ['canine-companion', 'co-op-survival']]
     ];
-    return `<main class="wrap">${groups.map(([eyebrowEn, eyebrowZh, titleEn, titleZh, copyEn, copyZh, slugs]) => { const entries = wiki.articles.filter((article) => slugs.includes(article.slug)); return `<section class="section">${sectionHead(t(eyebrowEn, eyebrowZh), t(titleEn, titleZh), t(copyEn, copyZh))}<div class="grid three">${entries.map(articleCard).join('')}</div></section>`; }).join('')}</main>`;
+    return `<main class="wrap"><section class="section"><p class="eyebrow">PERMAFROST GUIDE</p><h1 class="page-title">${t('Permafrost Guide', '《永冻纪元 - Permafrost》生存指南')}</h1><p class="lead">${t('Source-linked survival guides for cold weather, shelters, exploration, companions, and co-op.', '关于严寒、避难所、探索、伙伴与合作的来源链接生存指南。')}</p></section>${groups.map(([eyebrowEn, eyebrowZh, titleEn, titleZh, copyEn, copyZh, slugs]) => { const entries = wiki.articles.filter((article) => slugs.includes(article.slug)); return `<section class="section">${sectionHead(t(eyebrowEn, eyebrowZh), t(titleEn, titleZh), t(copyEn, copyZh))}<div class="grid three">${entries.map(articleCard).join('')}</div></section>`; }).join('')}</main>`;
   }
 
   function renderWorld() {
@@ -197,7 +197,15 @@
     document.documentElement.lang = locale;
     ensureFieldScaleStyles();
     const currentArticle = page === 'article' ? wiki.articles.find((item) => item.slug === articleSlug) : null;
-    document.title = currentArticle ? `${read(currentArticle, 'title')} | Permafrost Field Wiki` : isZh() ? '永冻纪元 - Permafrost | Field Wiki' : 'Permafrost | Field Wiki';
+    const pageTitles = {
+      home: 'Permafrost Wiki & Guide | Survival, News and Game Information',
+      guides: 'Permafrost Guide | Survival, Cold and Co-op | Permafrost Wiki',
+      world: 'Permafrost Wiki: World and Story',
+      library: 'Permafrost Wiki Library | Guides and Game Information',
+      map: 'Permafrost Guide to Exploration | Permafrost Wiki',
+      updates: 'Permafrost News and Release Updates | Permafrost Wiki'
+    };
+    document.title = currentArticle ? `Permafrost Guide: ${read(currentArticle, 'title')} | Permafrost Wiki` : pageTitles[page] || 'Permafrost Wiki';
     renderHeader(); renderFooter();
     const app = document.querySelector('#app');
     app.innerHTML = page === 'home' ? renderHome() : page === 'guides' ? renderGuides() : page === 'world' ? renderWorld() : page === 'library' ? renderLibrary() : page === 'map' ? renderMap() : page === 'updates' ? renderUpdates() : page === 'article' ? renderArticle() : renderHome();

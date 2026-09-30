@@ -45,6 +45,7 @@
 | JavaScript and source scan | Template source parses and no fictional sample-game text remains on reachable pages | Passed | pass |
 | Ice visual refresh | Home in dark/light themes and database view use ice-blue surfaces and highlights | Passed in local browser | pass |
 | Typography and video audit | 27 static routes, both UI families, and JavaScript syntax | Passed locally; Guide embeds expose native in-page play controls | pass |
+| SEO metadata | 27 HTML pages, 26 canonical URLs, robots and sitemap | Canonicals, JSON-LD, descriptions, title targets, and sitemap set are valid and generator is idempotent | pass |
 
 ### Errors
 | Error | Resolution |
@@ -56,6 +57,9 @@
 | Local Git commit after migration | The workspace sandbox blocked creation of `.git/index.lock` | Request an escalated Git commit for the user-authorized migration record. |
 | Sites source credential request returned `Invalid Sites project id` despite a successful `get_site` response for the manifest project ID | Do not retry the same credential call; complete local implementation and use the existing source/workflow path if available, otherwise report the Sites publishing blocker accurately. |
 | Route-validation command passed ripgrep file-glob arguments after the search path | Re-run the checks with `-g` before the search root; this is a command construction issue, not a site failure. |
+| Initial SEO generator passed a file URL to `path.join` | Convert the output directory URL to a filesystem path with `fileURLToPath`. |
+| SEO generator then referenced the removed URL `.pathname` property | Pass the resolved output-directory string to `path.relative`. |
+| SEO validation found some documents without a retained base description | Generate one canonical `description` tag for every page rather than relying on inherited markup. |
 
 ## Session: 2026-09-30
 
@@ -73,3 +77,7 @@
 - Final local verification passed: all 27 generated HTML routes returned HTTP 200, both JavaScript files parse, and `git diff --check` reported no whitespace errors.
 - Committed the completed UI work as `193a9f2` (`Improve reading and video scale`) and pushed it to GitHub. GitHub Desktop confirmed the push, and `origin/main` now resolves to that commit. Cloudflare Pages had not yet exposed the new stylesheet on the custom domain during two bounded checks, so its automatic deployment remains pending.
 - Computed-layout checks confirmed a 597×336px Guide player on the narrow responsive layout and an 817×460px article player on the desktop Field Wiki layout. Both are materially larger than the former narrow cards.
+- Started Phase 11 for keyword SEO. The static output has 27 crawlable HTML pages but lacks canonical, social, and structured metadata, plus robots and sitemap assets.
+- Added a repeatable SEO generator for all static pages and updated the visible Wiki and Guide headings so target phrases describe the page rather than acting as hidden keyword stuffing.
+- Validated the legacy and Field Wiki Guide routes in a browser: both publish the `Permafrost Guide | Survival, Cold and Co-op | Permafrost Wiki` title, and the Field guide has a visible, semantic `Permafrost Guide` H1.
+- Re-ran the repeatable SEO generator and checked every generated HTML document. All 27 pages now carry exactly one title, description, canonical URL, and JSON-LD record; the sitemap contains 26 unique canonical URLs. JavaScript syntax and whitespace checks also pass.
