@@ -46,6 +46,7 @@
 - Current source confirms the game-template family uses a 1120px base container, but ordinary article shells cap their actual reading width at 72ch. Guide cards inherit that cap, then split again in a two-column grid. The fix should widen normal prose moderately while exempting the Guide page from the article cap so official player embeds can use the main content column.
 - The Field Wiki family has independent styling: a 16px body, 780px article cap, and injected two-column official-video component. Its video component also needs to stack title/copy above a full-width player so article pages are not left behind.
 - Accessibility checks on the updated Guide page show all visible video modules as nested YouTube player frames with in-page play controls. The article-family player is now eager-loaded (there is at most one per article) so its direct-player frame is prepared without relying on a later scroll event.
+- Computed-layout QA confirms the responsive template player is 597×336px at a narrow 646px viewport, while the Field Wiki article player is 817×460px at a 1280px desktop viewport. The two original small-card failure modes are therefore removed in both page families.
 
 ## Resources
 - First-party release announcement: https://www.toplitz-productions.com/news-2388/release-date-for-the-frozen-apocalypse-is-moved-to-october-9-2026.html?page_n167=2
