@@ -41,7 +41,15 @@
     if (document.querySelector('#official-video-styles')) return;
     const style = document.createElement('style');
     style.id = 'official-video-styles';
-    style.textContent = `.official-video{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:20px;align-items:center;margin:38px 0 30px;padding:20px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(135deg,rgba(94,209,231,.1),rgba(14,32,44,.76))}.official-video h2{margin:7px 0 9px;font-size:1.25rem}.official-video p{margin:0;color:var(--muted);font-size:.9rem}.official-video a{display:inline-block;margin-top:13px;font-size:.82rem;font-weight:750}.official-video-frame{overflow:hidden;border:1px solid rgba(184,241,255,.25);border-radius:11px;background:#050d13;aspect-ratio:16/9}.official-video iframe{display:block;width:100%;height:100%;border:0}@media(max-width:700px){.official-video{grid-template-columns:1fr;padding:15px;gap:16px}}`;
+    style.textContent = `.official-video{display:grid;grid-template-columns:1fr;gap:22px;margin:44px 0 36px;padding:26px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(135deg,rgba(94,209,231,.1),rgba(14,32,44,.76))}.official-video h2{margin:7px 0 10px;font-size:clamp(1.45rem,2.4vw,1.8rem);line-height:1.2}.official-video p{margin:0;color:var(--muted);font-size:1.04rem;line-height:1.65}.official-video a{display:inline-block;margin-top:15px;font-size:.92rem;font-weight:750}.official-video-frame{overflow:hidden;border:1px solid rgba(184,241,255,.25);border-radius:12px;background:#050d13;aspect-ratio:16/9}.official-video iframe{display:block;width:100%;height:100%;border:0}@media(max-width:700px){.official-video{padding:18px;gap:18px;margin:32px 0}.official-video p{font-size:1rem}}`;
+    document.head.append(style);
+  }
+
+  function ensureFieldScaleStyles() {
+    if (document.querySelector('#field-scale-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'field-scale-styles';
+    style.textContent = `:root{--max:1240px}body{font-size:17px;line-height:1.65}.section{margin-top:72px}.section-head{gap:32px;margin-bottom:26px}.section-head p{max-width:540px;font-size:1rem}.card{padding:24px}.card h3{margin:13px 0 9px;font-size:1.26rem;line-height:1.28}.card p{font-size:1rem;line-height:1.62}.card-footer{margin-top:22px;font-size:.78rem}.article-layout{grid-template-columns:minmax(0,880px) 300px;gap:54px}.article{max-width:880px}.article .lead{font-size:1.2rem;line-height:1.65}.article h2{margin:42px 0 14px;font-size:1.6rem}.fact-list{gap:12px;margin:18px 0}.fact-list li{padding:10px 0 10px 15px;font-size:1.03rem;line-height:1.62}.aside{width:300px}.side-list li{padding:12px 0;font-size:.94rem}@media(max-width:850px){.article-layout{grid-template-columns:1fr}.aside{width:auto}}@media(max-width:520px){body{font-size:16px}.section{margin-top:48px}.card{padding:19px}.card h3{font-size:1.16rem}.section-head p,.card p{font-size:.98rem}.article .lead{font-size:1.1rem}.article h2{font-size:1.42rem}}`;
     document.head.append(style);
   }
 
@@ -49,7 +57,7 @@
     const title = read(video, 'title');
     const description = read(video, 'description');
     const url = `https://www.youtube.com/watch?v=${video.id}`;
-    return `<section class="official-video"><div><p class="eyebrow">${t('Official video', '官方视频')}</p><h2>${title}</h2><p>${description}</p><a href="${url}" target="_blank" rel="noreferrer">${t('Watch on YouTube', '在 YouTube 上观看')}</a></div><div class="official-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${video.id}?rel=0" title="${title}" loading="lazy" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>`;
+    return `<section class="official-video"><div><p class="eyebrow">${t('Official video', '官方视频')}</p><h2>${title}</h2><p>${description}</p><a href="${url}" target="_blank" rel="noreferrer">${t('Watch on YouTube', '在 YouTube 上观看')}</a></div><div class="official-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${video.id}?rel=0" title="${title}" loading="eager" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>`;
   }
 
   function renderHeader() {
@@ -187,6 +195,7 @@
 
   function render() {
     document.documentElement.lang = locale;
+    ensureFieldScaleStyles();
     const currentArticle = page === 'article' ? wiki.articles.find((item) => item.slug === articleSlug) : null;
     document.title = currentArticle ? `${read(currentArticle, 'title')} | Permafrost Field Wiki` : isZh() ? '永冻纪元 - Permafrost | Field Wiki' : 'Permafrost | Field Wiki';
     renderHeader(); renderFooter();

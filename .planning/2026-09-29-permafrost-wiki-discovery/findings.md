@@ -37,6 +37,16 @@
 |-------|------------|
 | Current local preview browser does not expose WebMCP | Left feature-detected registration in place; recorded validation gap because WebMCP was not user-requested. |
 
+## 2026-09-30 Layout Audit Findings
+
+- The user-facing `guides#cold` page uses the game-template layout. At desktop width its reading column is much narrower than the viewport, causing three embedded videos to appear as small two-column cards.
+- The narrow source of truth is the shared layout token (`--content`, currently 920px) and the Guide-video grid (`repeat(2, minmax(0, 1fr))`).
+- The Guide page has a legacy and a field-Wiki route, so responsive changes must preserve both `styles.css` and `assets/wiki.css` families.
+- Screenshot review shows the current 16px-ish video description and two-up 296px player cards do not meet the user's requested content scale. The next implementation will use larger single-column players for Guide sections and raise reading/heading scales across all page templates.
+- Current source confirms the game-template family uses a 1120px base container, but ordinary article shells cap their actual reading width at 72ch. Guide cards inherit that cap, then split again in a two-column grid. The fix should widen normal prose moderately while exempting the Guide page from the article cap so official player embeds can use the main content column.
+- The Field Wiki family has independent styling: a 16px body, 780px article cap, and injected two-column official-video component. Its video component also needs to stack title/copy above a full-width player so article pages are not left behind.
+- Accessibility checks on the updated Guide page show all visible video modules as nested YouTube player frames with in-page play controls. The article-family player is now eager-loaded (there is at most one per article) so its direct-player frame is prepared without relying on a later scroll event.
+
 ## Resources
 - First-party release announcement: https://www.toplitz-productions.com/news-2388/release-date-for-the-frozen-apocalypse-is-moved-to-october-9-2026.html?page_n167=2
 - First-party Gamescom trailer announcement: https://www.toplitz-productions.com/news-2388/permafrost-unleashes-the-frozen-apocalypse-in-new-gamescom-trailer.html?page_n167=11

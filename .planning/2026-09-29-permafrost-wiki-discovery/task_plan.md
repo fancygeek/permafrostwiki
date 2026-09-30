@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 9
+Phase 10
 
 ## Phases
 
@@ -62,6 +62,13 @@ Phase 9
 - [ ] Privately republish the visual refresh
 - **Status:** in progress
 
+### Phase 10: Site-wide Typography & Video Scale Audit
+- [x] Inspect primary pages and article templates at desktop and mobile widths
+- [x] Increase type scale and content width where the current template is too sparse
+- [x] Resize and recompose guide-video modules for useful viewing size
+- [ ] Verify dark/light themes, every page family, and publish the update
+- **Status:** in progress
+
 ## Decisions Made
 | Decision | Rationale |
 |----------|-----------|
@@ -82,3 +89,4 @@ Phase 9
 | Combined multi-file patch used an invalid context | Re-read the individual planning files and apply narrowly targeted patches. |
 | A stale browser tab was not available to the current session | Created a fresh local-preview tab for the required tool-capability check. |
 | Existing-site workflow rejected an expired source credential | Minted a new credential for the same Site, then retried the opening workflow with approved network access. |
+| Custom-domain deployment lagged behind the Site publication | The GitHub-connected Cloudflare Pages deployment needs the source branch pushed separately. |

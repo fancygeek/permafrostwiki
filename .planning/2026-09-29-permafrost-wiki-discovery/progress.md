@@ -44,6 +44,7 @@
 | Remaining template pages | News, Survival, Release, and About pages render their expected content | Passed in local browser | pass |
 | JavaScript and source scan | Template source parses and no fictional sample-game text remains on reachable pages | Passed | pass |
 | Ice visual refresh | Home in dark/light themes and database view use ice-blue surfaces and highlights | Passed in local browser | pass |
+| Typography and video audit | 27 static routes, both UI families, and JavaScript syntax | Passed locally; Guide embeds expose native in-page play controls | pass |
 
 ### Errors
 | Error | Resolution |
@@ -53,3 +54,20 @@
 | Source workflow expired credential | Requested a fresh credential for the same Site before reopening the checkout. |
 | Initial article-shell patch contained one incorrect parent path | Verified its partial success, then added the remaining six correct routes in a targeted patch. |
 | Local Git commit after migration | The workspace sandbox blocked creation of `.git/index.lock` | Request an escalated Git commit for the user-authorized migration record. |
+| Sites source credential request returned `Invalid Sites project id` despite a successful `get_site` response for the manifest project ID | Do not retry the same credential call; complete local implementation and use the existing source/workflow path if available, otherwise report the Sites publishing blocker accurately. |
+| Route-validation command passed ripgrep file-glob arguments after the search path | Re-run the checks with `-g` before the search root; this is a command construction issue, not a site failure. |
+
+## Session: 2026-09-30
+
+### Current Status
+- **Phase:** 10 - Site-wide Typography & Video Scale Audit
+
+### Actions Taken
+- Reviewed the user screenshot of the live Guide page and confirmed that the current two-column player cards are undersized for desktop reading.
+- Started a cross-page audit of the game-template routes and Field Wiki article routes. The next step is to adjust their shared layout tokens and video components together, then validate desktop and mobile output.
+- Inspected all generated template page classes plus both CSS families. The template Guide route is the visible custom-domain route; the Field Wiki article routes use a separate generated layout and injected video styles. Both will receive the same readable-scale treatment.
+- Updated the template family to use an 18px desktop text base, a wider shared container, larger article and card typography, and full-width single-column Guide video cards. The Field Wiki family now applies a matching 17px reading scale, wider article layout, and vertical large-player video treatment.
+- Static JavaScript syntax checks, whitespace validation, and local HTTP checks for the template Guide and Field Wiki article routes passed. Browser accessibility inspection confirms the template Guide now has individual embedded YouTube players with in-page play controls.
+- Set the article-family player to eager-load because a single official video per article is small in scope and is expected to be immediately viewable. This preserves a direct in-site player while keeping multi-video Guide groups lazy-loaded.
+- Rechecked the generated Field Wiki article after the player change. The embedded frame remains present; the in-app browser defers the offscreen frame until it becomes visible, which is expected browser behavior. The top-of-page Guide players load with their native YouTube controls.
+- Final local verification passed: all 27 generated HTML routes returned HTTP 200, both JavaScript files parse, and `git diff --check` reported no whitespace errors.

@@ -30,7 +30,7 @@ html[data-theme="dark"] {
   --font-body: "Source Sans 3", "Noto Sans SC", "PingFang SC", "Segoe UI", sans-serif;
   --header-h: 64px;
   --toc-w: 220px;
-  --container: 1120px;
+  --container: 1180px;
   --focus: #b8f1ff;
 }
 
@@ -67,8 +67,8 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 17px;
-  line-height: 1.65;
+  font-size: 18px;
+  line-height: 1.68;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -449,7 +449,7 @@ html[data-theme="light"] .hero-shade {
   grid-template-columns: 1fr;
   gap: 0;
   width: min(100% - 32px, calc(var(--container) + var(--toc-w) + 32px));
-  margin: 28px auto 64px;
+  margin: 36px auto 72px;
 }
 
 .toc {
@@ -465,7 +465,7 @@ html[data-theme="light"] .hero-shade {
 .article.container {
   width: 100%;
   min-width: 0;
-  max-width: 72ch;
+  max-width: 78ch;
   padding: 0;
 }
 
@@ -473,21 +473,26 @@ html[data-theme="light"] .hero-shade {
   max-width: none;
 }
 
+/* Guide pages are a viewing surface, not a narrow prose article. */
+body[data-page="guides"] .article.container {
+  max-width: none;
+}
+
 .article-brief p {
   margin: 0 0 12px;
   color: var(--text-dim);
-  max-width: 68ch;
+  max-width: 76ch;
 }
 
 .content-section {
-  margin-bottom: 36px;
-  padding-bottom: 8px;
+  margin-bottom: 48px;
+  padding-bottom: 12px;
   scroll-margin-top: calc(var(--header-h) + 16px);
 }
 
 .content-section > p {
   margin: 0 0 14px;
-  max-width: 68ch;
+  max-width: 76ch;
 }
 
 .section-heading {
@@ -495,13 +500,13 @@ html[data-theme="light"] .hero-shade {
 }
 
 .section-heading h2 {
-  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-size: clamp(1.55rem, 2.5vw, 2rem);
 }
 
 .section-heading > p {
   margin: 0;
   color: var(--text-dim);
-  max-width: 68ch;
+  max-width: 76ch;
 }
 
 /* --------------------------------------------------------------------------
@@ -509,13 +514,13 @@ html[data-theme="light"] .hero-shade {
    -------------------------------------------------------------------------- */
 .fact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 14px 0 18px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin: 18px 0 22px;
 }
 
 .fact-card {
-  padding: 14px 14px 12px;
+  padding: 18px 18px 16px;
   border-radius: var(--radius-sm);
   border-left: 3px solid var(--ice);
   background: linear-gradient(180deg, var(--panel), color-mix(in srgb, var(--panel-2) 70%, var(--panel)));
@@ -542,7 +547,7 @@ html[data-theme="light"] .hero-shade {
 .fact-card p {
   margin: 6px 0 0;
   color: var(--text-dim);
-  font-size: 0.9rem;
+  font-size: 0.98rem;
 }
 
 .signal-list {
@@ -558,13 +563,13 @@ html[data-theme="light"] .hero-shade {
 .guide-link-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  margin: 14px 0;
+  gap: 14px;
+  margin: 18px 0;
 }
 
 .guide-link-grid a {
   display: block;
-  padding: 14px;
+  padding: 18px;
   border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--panel);
@@ -590,14 +595,14 @@ html[data-theme="light"] .hero-shade {
 
 .guide-link-grid strong {
   display: block;
-  font-size: 1.02rem;
+  font-size: 1.12rem;
   margin-bottom: 4px;
 }
 
 .guide-link-grid p {
   margin: 0;
   color: var(--text-dim);
-  font-size: 0.92rem;
+  font-size: 0.98rem;
 }
 
 /* 新闻列表 */
@@ -610,8 +615,8 @@ html[data-theme="light"] .hero-shade {
 .news-card {
   display: grid;
   grid-template-columns: 96px 1fr;
-  gap: 14px;
-  padding: 14px;
+  gap: 18px;
+  padding: 18px;
   border: 1px solid var(--line);
   border-left: 3px solid var(--line-strong);
   border-radius: var(--radius);
@@ -651,7 +656,7 @@ html[data-theme="light"] .hero-shade {
 
 .news-body h3 {
   margin: 0 0 6px;
-  font-size: 1.08rem;
+  font-size: 1.2rem;
   line-height: 1.35;
 }
 
@@ -667,7 +672,7 @@ html[data-theme="light"] .hero-shade {
 .news-body p {
   margin: 0 0 10px;
   color: var(--text-dim);
-  font-size: 0.94rem;
+  font-size: 1rem;
 }
 
 .news-tags {
@@ -1093,14 +1098,14 @@ html[data-theme="light"] .database-masthead-shade {
 .database-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 16px;
 }
 
 .guide-video-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-bottom: 14px;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
 }
 
 .guide-video {
@@ -1111,18 +1116,20 @@ html[data-theme="light"] .database-masthead-shade {
 }
 
 .guide-video-copy {
-  padding: 14px 14px 10px;
+  padding: 22px 24px 18px;
 }
 
 .guide-video-copy h3 {
-  margin: 5px 0 6px;
-  font-size: 1.05rem;
+  margin: 7px 0 8px;
+  font-size: clamp(1.3rem, 2vw, 1.55rem);
+  line-height: 1.25;
 }
 
 .guide-video-copy p:last-child {
   margin: 0;
   color: var(--text-dim);
-  font-size: 0.9rem;
+  font-size: 1.04rem;
+  line-height: 1.62;
 }
 
 .guide-video-frame {
@@ -1138,12 +1145,12 @@ html[data-theme="light"] .database-masthead-shade {
 }
 
 @media (max-width: 640px) {
-  .guide-video-grid { grid-template-columns: 1fr; }
+  .guide-video-copy { padding: 18px 18px 16px; }
 }
 
 .database-entity {
   min-width: 0;
-  padding: 14px;
+  padding: 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: linear-gradient(145deg, var(--panel), color-mix(in srgb, var(--panel-2) 55%, var(--panel)));
@@ -1177,14 +1184,14 @@ html[data-theme="light"] .database-masthead-shade {
 
 .database-entity h3 {
   margin: 0 0 4px;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
 }
 
 .database-entity > p,
 .database-entity-head p {
   margin: 6px 0 0;
   color: var(--text-dim);
-  font-size: 0.92rem;
+  font-size: 1rem;
 }
 
 .database-badges {
@@ -1516,7 +1523,7 @@ html[data-theme="light"] .database-masthead-shade {
 
 @media (max-width: 600px) {
   body {
-    font-size: 16px;
+    font-size: 16.5px;
   }
 
   .site-header {
