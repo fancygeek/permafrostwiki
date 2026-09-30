@@ -49,7 +49,7 @@
     const title = read(video, 'title');
     const description = read(video, 'description');
     const url = `https://www.youtube.com/watch?v=${video.id}`;
-    return `<section class="official-video"><div><p class="eyebrow">${t('Official video', '官方视频')}</p><h2>${title}</h2><p>${description}</p><a href="${url}" target="_blank" rel="noreferrer">${t('Watch on YouTube', '在 YouTube 上观看')}</a></div><div class="official-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${video.id}" title="${title}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>`;
+    return `<section class="official-video"><div><p class="eyebrow">${t('Official video', '官方视频')}</p><h2>${title}</h2><p>${description}</p><a href="${url}" target="_blank" rel="noreferrer">${t('Watch on YouTube', '在 YouTube 上观看')}</a></div><div class="official-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${video.id}?rel=0" title="${title}" loading="lazy" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>`;
   }
 
   function renderHeader() {

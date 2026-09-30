@@ -1096,6 +1096,51 @@ html[data-theme="light"] .database-masthead-shade {
   gap: 10px;
 }
 
+.guide-video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.guide-video {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, var(--panel), color-mix(in srgb, var(--panel-2) 55%, var(--panel)));
+}
+
+.guide-video-copy {
+  padding: 14px 14px 10px;
+}
+
+.guide-video-copy h3 {
+  margin: 5px 0 6px;
+  font-size: 1.05rem;
+}
+
+.guide-video-copy p:last-child {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.guide-video-frame {
+  aspect-ratio: 16 / 9;
+  background: var(--bg);
+}
+
+.guide-video-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .guide-video-grid { grid-template-columns: 1fr; }
+}
+
 .database-entity {
   min-width: 0;
   padding: 14px;

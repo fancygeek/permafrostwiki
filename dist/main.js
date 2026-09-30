@@ -33,12 +33,18 @@
     const facts = isZh() ? article.factsZh : article.facts;
     return `<article class="database-entity" data-category="${esc(article.category)}">
       <div class="database-entity-head"><div class="database-entity-portrait" aria-hidden="true">${esc(read(article, 'title').slice(0, 1))}</div>
-        <div><h3>${esc(read(article, 'title'))}</h3><div class="database-badges"><span class="database-rarity">${esc(read(article, 'category'))}</span></div></div>
+        <div><h3><a href="articles/${esc(article.slug)}.html">${esc(read(article, 'title'))}</a></h3><div class="database-badges"><span class="database-rarity">${esc(read(article, 'category'))}</span></div></div>
       </div>
       <p>${esc(read(article, 'lead'))}</p>
       <ul class="signal-list">${facts.map((fact) => `<li>${esc(fact)}</li>`).join('')}</ul>
-      <p class="database-source"><a href="${esc(source.url)}" target="_blank" rel="noreferrer">${esc(t(source.label, source.zh))}</a></p>
+      <p class="database-source"><a href="articles/${esc(article.slug)}.html">${esc(t('Read guide', '阅读指南'))}</a><span aria-hidden="true"> · </span><a href="${esc(source.url)}" target="_blank" rel="noreferrer">${esc(t(source.label, source.zh))}</a></p>
     </article>`;
+  }
+
+  function guideVideo(video) {
+    const title = read(video, 'title');
+    const description = read(video, 'description');
+    return `<section class="guide-video"><div class="guide-video-copy"><p class="eyebrow">${esc(t('Official video', '官方视频'))}</p><h3>${esc(title)}</h3><p>${esc(description)}</p></div><div class="guide-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${esc(video.id)}?rel=0" title="${esc(title)}" loading="lazy" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>`;
   }
 
   function sourceList() {
@@ -179,13 +185,15 @@
   function renderGuides() {
     html('[data-page-heading]', pageHead(t('Survival', '生存'), t('Survival systems', '生存系统'), t('Cold, shelters, exploration, companions, and co-op.', '严寒、避难所、探索、伙伴与合作。')));
     const groups = [
-      ['cold', 'Survival', '生存', 'Cold and weather', '严寒与天气', ['cold-and-weather']],
+      ['getting-started', 'Survival', '生存', 'First steps', '入门指南', ['essential-tools', 'preparing-for-expedition', 'survival-basics']],
+      ['cold', 'Survival', '生存', 'Cold and weather', '严寒与天气', ['cold-and-weather', 'survival-hazards']],
       ['shelters', 'Survival', '生存', 'Shelters and exploration', '避难所与探索', ['shelter-network', 'exploration-progression']],
       ['companions', 'Companions', '伙伴', 'Companions and co-op', '伙伴与合作', ['canine-companion', 'co-op-survival']]
     ];
     html('[data-guides]', groups.map(([id, eyebrowEn, eyebrowZh, titleEn, titleZh, slugs]) => {
       const entries = D.articles.filter((article) => slugs.includes(article.slug));
-      return `<section class="content-section" id="${id}">${sectionHead(t(eyebrowEn, eyebrowZh), t(titleEn, titleZh), t('Read Permafrost information for this topic.', '阅读该主题的《永冻纪元 - Permafrost》资料。'))}<div class="database-grid">${entries.map(articleCard).join('')}</div></section>`;
+      const videos = entries.flatMap((article) => article.videos || []);
+      return `<section class="content-section" id="${id}">${sectionHead(t(eyebrowEn, eyebrowZh), t(titleEn, titleZh), t('Watch the official videos and read the supporting Wiki entries.', '观看官方视频并阅读相应的 Wiki 条目。'))}${videos.length ? `<div class="guide-video-grid">${videos.map(guideVideo).join('')}</div>` : ''}<div class="database-grid">${entries.map(articleCard).join('')}</div></section>`;
     }).join(''));
   }
 
