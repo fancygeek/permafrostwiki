@@ -10,20 +10,20 @@ const siteId = `${origin}/#website`;
 
 const pages = {
   '/': {
-    title: 'Permafrost Wiki & Guide | Survival, News and Game Information',
-    description: 'Permafrost Wiki and Permafrost guide for survival systems, world and story, official videos, and release news.'
+    title: 'Permafrost Wiki | Permafrost Guide, Survival, News and Game Information',
+    description: 'Permafrost Wiki for game information, story, survival systems, official videos, and release news. Start with the Permafrost Guide for cold, shelter, tools, and co-op.'
   },
   '/guides': {
-    title: 'Permafrost Guide | Survival, Cold and Co-op | Permafrost Wiki',
-    description: 'Use this Permafrost guide to explore survival systems, cold weather, shelters, companions, and co-op in the Permafrost Wiki.'
+    title: 'Permafrost Guide | Survival, Cold, Shelter and Co-op',
+    description: 'Use this Permafrost Guide for survival systems, cold weather, shelters, companions, and co-op. Browse the Permafrost Wiki for story and release information.'
   },
   '/database': {
     title: 'Permafrost Wiki Database | Guides, Story and Sources',
     description: 'Browse the Permafrost Wiki database for source-linked guides, world and story entries, and current game information.'
   },
   '/library': {
-    title: 'Permafrost Wiki Library | Guides and Game Information',
-    description: 'Browse the Permafrost Wiki library for source-linked Permafrost guides, world entries, and game information.'
+    title: 'Permafrost Wiki Library | Browse Permafrost Guides',
+    description: 'Browse the Permafrost Wiki library for source-linked Permafrost Guides, world entries, release information, and game systems.'
   },
   '/world': {
     title: 'Permafrost Wiki: World and Story | The Shattering and Rook',
@@ -195,15 +195,15 @@ function fallbackMarkup(route, metadata) {
   }).join('');
 
   if (metadata.kind === 'article') {
-    return `<main class="wrap"><div class="article-layout"><article class="article"><p class="eyebrow">${escapeHtml(metadata.section)}</p><h1>${escapeHtml(metadata.headline)}</h1><p class="lead">${escapeHtml(metadata.description)}</p><p><a href="/guides/">Browse the Permafrost guide</a> or <a href="/library/">view all Wiki entries</a>.</p></article></div></main>`;
+    return `<main class="wrap"><div class="article-layout"><article class="article"><p class="eyebrow">${escapeHtml(metadata.section)}</p><h1>${escapeHtml(metadata.headline)}</h1><p class="lead">${escapeHtml(metadata.description)}</p><p><a href="/guides/">Browse the Permafrost Guide</a> or <a href="/library/">view all Permafrost Wiki entries</a>.</p></article></div></main>`;
   }
 
   if (route === '/') {
-    return `<h1>Permafrost Wiki &amp; Guide</h1><p>Source-linked game information, survival guides, world and story entries, and official release news for Permafrost.</p><h2>Featured guides</h2><ul>${articleLinks(['survival-basics', 'cold-and-weather', 'shelter-network', 'early-access-release'])}</ul>`;
+    return `<h1>Permafrost Wiki</h1><p>Use the Permafrost Wiki for source-linked game information, story, survival guides, and official release news. Start with the Permafrost Guide for cold, shelter, tools, and co-op.</p><h2>Featured Permafrost Guides</h2><ul>${articleLinks(['survival-basics', 'cold-and-weather', 'shelter-network', 'early-access-release'])}</ul>`;
   }
 
   if (route === '/guides') {
-    return `<main class="wrap"><section class="section"><p class="eyebrow">PERMAFROST GUIDE</p><h1>Permafrost Guide</h1><p>Source-linked survival guides for cold weather, shelters, exploration, companions, and co-op.</p><h2>Survival guides</h2><ul>${articleLinks(['survival-basics', 'cold-and-weather', 'essential-tools', 'preparing-for-expedition', 'survival-hazards', 'shelter-network', 'exploration-progression', 'canine-companion', 'co-op-survival'])}</ul></section></main>`;
+    return `<main class="wrap"><section class="section"><p class="eyebrow">PERMAFROST GUIDE</p><h1>Permafrost Guide</h1><p>This Permafrost Guide covers cold weather, shelters, exploration, companions, and co-op. Browse the Permafrost Wiki for world, story, and release information.</p><h2>Permafrost Survival Guides</h2><ul>${articleLinks(['survival-basics', 'cold-and-weather', 'essential-tools', 'preparing-for-expedition', 'survival-hazards', 'shelter-network', 'exploration-progression', 'canine-companion', 'co-op-survival'])}</ul></section></main>`;
   }
 
   if (route === '/world') {
@@ -211,7 +211,7 @@ function fallbackMarkup(route, metadata) {
   }
 
   if (route === '/library') {
-    return `<main class="wrap"><section class="section"><p class="eyebrow">PERMAFROST WIKI</p><h1>Permafrost Wiki Library</h1><p>Browse all current source-linked Permafrost guides, world entries, and release information.</p><ul>${articleLinks(Object.keys(articles))}</ul></section></main>`;
+    return `<main class="wrap"><section class="section"><p class="eyebrow">PERMAFROST WIKI</p><h1>Permafrost Wiki Library</h1><p>Browse all current source-linked Permafrost Guides, world entries, and release information in the Permafrost Wiki.</p><ul>${articleLinks(Object.keys(articles))}</ul></section></main>`;
   }
 
   if (route === '/map') {

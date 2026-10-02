@@ -85,13 +85,13 @@
     return `<section class="hero"><div class="wrap">
       <p class="eyebrow">PERMAFROST FIELD WIKI</p>
       <h1>PERMAFROST<br><span>WIKI</span></h1>
-      <p class="hero-copy">${t('Game information, story, survival systems, and official announcements.', '游戏资料、剧情、生存系统与官方公告。')}</p>
+      <p class="hero-copy">${t('Explore the Permafrost Wiki for game information, story, survival systems, and official announcements. Start with the Permafrost Guide for cold, shelter, tools, and co-op.', '浏览《永冻纪元 - Permafrost》游戏 Wiki，查看游戏资料、剧情、生存系统与官方公告；生存指南涵盖严寒、避难所、工具与合作玩法。')}</p>
       <div class="meta-strip"><span class="meta-chip safe">${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</span><span class="meta-chip">${t('1–4 player co-op', '1–4 人合作')}</span><span class="meta-chip">Steam</span></div>
     </div></section>
     <main class="wrap">
-      <section class="section">${sectionHead(t('Browse by topic', '按主题浏览'), t('Wiki sections', 'Wiki 分区'), t('Survival systems, world and story, and the full article library.', '生存系统、世界与剧情，以及完整条目库。'))}
+      <section class="section">${sectionHead(t('Browse the Permafrost Wiki', '浏览 Permafrost Wiki'), t('Permafrost Wiki sections', 'Permafrost Wiki 分区'), t('Browse survival systems, world and story, and the full Permafrost Wiki article library.', '浏览生存系统、世界与剧情，以及完整的 Permafrost Wiki 条目库。'))}
         <div class="grid three">
-          <a class="card-link" href="/guides/"><article class="card"><span class="category">${t('Survival', '生存')}</span><h3>${t('Survival field guide', '生存野外手册')}</h3><p>${t('Cold, shelter networks, exploration, companions, and co-op.', '严寒、避难所网络、探索、伙伴和合作。')}</p></article></a>
+          <a class="card-link" href="/guides/"><article class="card"><span class="category">${t('Survival', '生存')}</span><h3>${t('Permafrost Guide: Survival', 'Permafrost 生存指南')}</h3><p>${t('Use the Permafrost Guide for cold, shelter networks, exploration, companions, and co-op.', '使用 Permafrost 生存指南查看严寒、避难所网络、探索、伙伴和合作。')}</p></article></a>
           <a class="card-link" href="/world/"><article class="card"><span class="category">${t('World', '世界')}</span><h3>${t('World & story', '世界与剧情')}</h3><p>${t('Rook, the signal, The Shattering, predators, and factions.', 'Rook、信号、The Shattering、掠食动物和势力。')}</p></article></a>
           <a class="card-link" href="/library/"><article class="card"><span class="category">${t('Library', '资料库')}</span><h3>${t('Browse the library', '浏览资料库')}</h3><p>${t('Explore current articles and official dispatches.', '浏览当前资料条目和官方动态。')}</p></article></a>
         </div>
@@ -106,7 +106,7 @@
       ['Weather, shelter & safety', '天气、避难所与安全', 'Surviving the wilderness', '荒野生存', 'Prepare for cold weather, manage hazards, and plan longer journeys.', '为严寒做准备、应对威胁，并规划更长的行程。', ['cold-and-weather', 'survival-hazards', 'shelter-network', 'exploration-progression']],
       ['Companions & co-op', '伙伴与合作', 'Travel together', '结伴同行', 'Travel with the dog companion or survive with a group.', '与狗狗伙伴同行，或与队友一起生存。', ['canine-companion', 'co-op-survival']]
     ];
-    return `<main class="wrap"><section class="section"><p class="eyebrow">PERMAFROST GUIDE</p><h1 class="page-title">${t('Permafrost Guide', '《永冻纪元 - Permafrost》生存指南')}</h1><p class="lead">${t('Source-linked survival guides for cold weather, shelters, exploration, companions, and co-op.', '关于严寒、避难所、探索、伙伴与合作的来源链接生存指南。')}</p></section>${groups.map(([eyebrowEn, eyebrowZh, titleEn, titleZh, copyEn, copyZh, slugs]) => { const entries = wiki.articles.filter((article) => slugs.includes(article.slug)); return `<section class="section">${sectionHead(t(eyebrowEn, eyebrowZh), t(titleEn, titleZh), t(copyEn, copyZh))}<div class="grid three">${entries.map(articleCard).join('')}</div></section>`; }).join('')}</main>`;
+    return `<main class="wrap"><section class="section"><p class="eyebrow">PERMAFROST GUIDE</p><h1 class="page-title">${t('Permafrost Guide', '《永冻纪元 - Permafrost》生存指南')}</h1><p class="lead">${t('This Permafrost Guide covers cold weather, shelters, exploration, companions, and co-op. Browse the Permafrost Wiki for story and release information.', '这份 Permafrost 生存指南涵盖严寒、避难所、探索、伙伴与合作玩法；剧情和发售信息请浏览 Permafrost Wiki。')}</p></section>${groups.map(([eyebrowEn, eyebrowZh, titleEn, titleZh, copyEn, copyZh, slugs]) => { const entries = wiki.articles.filter((article) => slugs.includes(article.slug)); return `<section class="section">${sectionHead(t(eyebrowEn, eyebrowZh), t(titleEn, titleZh), t(copyEn, copyZh))}<div class="grid three">${entries.map(articleCard).join('')}</div></section>`; }).join('')}</main>`;
   }
 
   function renderWorld() {
@@ -196,16 +196,6 @@
   function render() {
     document.documentElement.lang = locale;
     ensureFieldScaleStyles();
-    const currentArticle = page === 'article' ? wiki.articles.find((item) => item.slug === articleSlug) : null;
-    const pageTitles = {
-      home: 'Permafrost Wiki & Guide | Survival, News and Game Information',
-      guides: 'Permafrost Guide | Survival, Cold and Co-op | Permafrost Wiki',
-      world: 'Permafrost Wiki: World and Story',
-      library: 'Permafrost Wiki Library | Guides and Game Information',
-      map: 'Permafrost Guide to Exploration | Permafrost Wiki',
-      updates: 'Permafrost News and Release Updates | Permafrost Wiki'
-    };
-    document.title = currentArticle ? `Permafrost Guide: ${read(currentArticle, 'title')} | Permafrost Wiki` : pageTitles[page] || 'Permafrost Wiki';
     renderHeader(); renderFooter();
     const app = document.querySelector('#app');
     app.innerHTML = page === 'home' ? renderHome() : page === 'guides' ? renderGuides() : page === 'world' ? renderWorld() : page === 'library' ? renderLibrary() : page === 'map' ? renderMap() : page === 'updates' ? renderUpdates() : page === 'article' ? renderArticle() : renderHome();
