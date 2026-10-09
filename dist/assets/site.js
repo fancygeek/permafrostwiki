@@ -2,6 +2,7 @@
   const wiki = window.PERMAFROST_WIKI;
   if (!wiki) return;
 
+  const THEME_KEY = 'permafrost-template-theme';
   let locale = (() => {
     try { return localStorage.getItem('permafrost-locale') === 'zh' ? 'zh' : 'en'; }
     catch (_) { return 'en'; }
@@ -16,6 +17,21 @@
   const blogRoute = (slug) => `/blog/${slug}.html`;
   const source = (article) => wiki.sources[article.source];
   const sourceLabel = (article) => t(source(article).label, source(article).zh);
+
+  function ensureFieldThemeStyles() {
+    if (document.querySelector('#field-theme-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'field-theme-styles';
+    style.textContent = `html[data-theme="light"]{--ink:#edf8fb;--ink-2:#f7fcfe;--panel:#fff;--panel-soft:rgba(255,255,255,.88);--line:rgba(4,85,109,.2);--ice:#056c89;--cyan:#076e8b;--snow:#102734;--muted:#4f7380;--safe:#176a53;--planned:#965c12;--danger:#af5624}html[data-theme="light"] body{background:radial-gradient(circle at 78% -10%,rgba(7,110,139,.14),transparent 31rem),linear-gradient(90deg,rgba(7,110,139,.045) 1px,transparent 1px) 0 0/46px 46px,linear-gradient(rgba(7,110,139,.045) 1px,transparent 1px) 0 0/46px 46px,var(--ink)}html[data-theme="light"] .site-header{background:rgba(247,252,254,.9)}html[data-theme="light"] .search-row input,html[data-theme="light"] .form-grid select{border-color:rgba(4,85,109,.3);background:#fff;color:var(--snow)}html[data-theme="light"] .hero{background:linear-gradient(90deg,rgba(237,248,251,.95),rgba(237,248,251,.74) 45%,rgba(237,248,251,.3)),url("/assets/permafrost-hero.png") center/cover}html[data-theme="light"] .hero:after{background:linear-gradient(0deg,var(--ink),transparent 38%)}html[data-theme="light"] .map-board{background:#d7edf3}`;
+    document.head.append(style);
+  }
+
+  function applyFieldTheme() {
+    let theme = 'dark';
+    try { theme = localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark'; } catch (_) {}
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#edf8fb' : '#071018');
+  }
   const blogCategory = (id) => {
     const labels = {
       roundup: ['Roundup', '视频汇总'],
@@ -54,7 +70,7 @@
     if (document.querySelector('#official-video-styles')) return;
     const style = document.createElement('style');
     style.id = 'official-video-styles';
-    style.textContent = `.official-video{display:grid;grid-template-columns:1fr;gap:22px;margin:44px 0 36px;padding:26px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(135deg,rgba(94,209,231,.1),rgba(14,32,44,.76))}.official-video h2{margin:7px 0 10px;font-size:clamp(1.45rem,2.4vw,1.8rem);line-height:1.2}.official-video p{margin:0;color:var(--muted);font-size:1.04rem;line-height:1.65}.official-video a{display:inline-block;margin-top:15px;font-size:.92rem;font-weight:750}.official-video-frame{overflow:hidden;border:1px solid rgba(184,241,255,.25);border-radius:12px;background:#050d13;aspect-ratio:16/9}.official-video iframe{display:block;width:100%;height:100%;border:0}@media(max-width:700px){.official-video{padding:18px;gap:18px;margin:32px 0}.official-video p{font-size:1rem}}`;
+    style.textContent = `.official-video{display:grid;grid-template-columns:1fr;gap:22px;margin:44px 0 36px;padding:26px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(135deg,rgba(94,209,231,.1),var(--panel-soft))}.official-video h2{margin:7px 0 10px;font-size:clamp(1.45rem,2.4vw,1.8rem);line-height:1.2}.official-video p{margin:0;color:var(--muted);font-size:1.04rem;line-height:1.65}.official-video a{display:inline-block;margin-top:15px;font-size:.92rem;font-weight:750}.official-video-frame{overflow:hidden;border:1px solid rgba(184,241,255,.25);border-radius:12px;background:var(--ink-2);aspect-ratio:16/9}.official-video iframe{display:block;width:100%;height:100%;border:0}@media(max-width:700px){.official-video{padding:18px;gap:18px;margin:32px 0}.official-video p{font-size:1rem}}`;
     document.head.append(style);
   }
 
@@ -231,6 +247,8 @@
   }
 
   function render() {
+    ensureFieldThemeStyles();
+    applyFieldTheme();
     document.documentElement.lang = locale;
     ensureFieldScaleStyles();
     renderHeader(); renderFooter();

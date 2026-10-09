@@ -131,6 +131,14 @@
 - Dark-theme computed styles confirm the shared image (`permafrost-hero.png`), focal point (`center 30%`), and two overlay gradients now match Home exactly. The only remaining mismatch was Blog's muted-grey masthead description; it now uses the shared snow-white text token.
 - Light-theme browser verification confirms both surfaces now share the same image, overlay gradients, and `rgb(16, 39, 52)` body-copy colour. In dark theme both use `rgb(238, 250, 255)`; the 390px Blog masthead preserves its 240px short format without horizontal overflow.
 
+## 2026-10-09 Field Blog Detail Theme Findings
+
+- The user-referenced URL (`/blog/release-week-guide-video-roundup`) belongs to the separate Field Wiki rendering family. It loads `assets/wiki.css`, whose root variables and header/body colors are dark-only, and it has no `data-theme` state.
+- Root pages store the reader's theme under `permafrost-template-theme`. The relevant user session has selected its light value, but `assets/site.js` never reads that key; the detail page therefore falls back to its hard-coded black background.
+- The durable correction is to make Field Wiki set the same document theme from the shared preference and add a light variable/header/form/hero override to its own stylesheet. This fixes every Field article and Blog post, not just the screenshot route.
+- Browser proof for the supplied route: after Home selects light theme, the Field Blog detail receives `data-theme="light"`, a `rgb(237, 248, 251)` body background, `rgb(16, 39, 52)` body text, and `rgba(247, 252, 254, 0.9)` header background. Its theme style is present and the page has no horizontal overflow.
+- A representative Field article shares the same light body/text palette; its injected video panel now resolves to the light shared panel variable. At 390px the referenced Blog detail has a 347px article, places its aside after the article, and does not overflow.
+
 ## Resources
 - First-party release announcement: https://www.toplitz-productions.com/news-2388/release-date-for-the-frozen-apocalypse-is-moved-to-october-9-2026.html?page_n167=2
 - First-party Gamescom trailer announcement: https://www.toplitz-productions.com/news-2388/permafrost-unleashes-the-frozen-apocalypse-in-new-gamescom-trailer.html?page_n167=11

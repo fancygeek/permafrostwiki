@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 17 (complete)
+Phase 18 (complete)
 
 ## Phases
 
@@ -114,6 +114,12 @@ Phase 17 (complete)
 - [x] Compare homepage and Blog computed hero/masthead colors in both themes
 - [x] Consolidate the two masthead treatments onto the shared polar-night visual system
 - [x] Verify visual alignment and responsive behavior at desktop and mobile widths
+- **Status:** complete
+
+### Phase 18: Shared Theme State for Field Blog Details
+- [x] Trace the detail-page visual family and identify why it ignores the root site's theme preference
+- [x] Make Field Wiki routes consume the same light/dark preference and light visual tokens as the root site
+- [x] Verify the referenced Blog detail page and representative Field routes at desktop and mobile widths
 - **Status:** complete
 
 ## Decisions Made

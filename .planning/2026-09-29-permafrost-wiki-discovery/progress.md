@@ -232,3 +232,25 @@
 - Light desktop: Home and Blog both use the same image and pale overlay gradients, with `rgb(16, 39, 52)` masthead copy.
 - Mobile at 390px: Blog retains its 240px reading-page masthead, uses the shared dark visual treatment, and has no horizontal overflow.
 - `node --check` passed for both runtime files and `git diff --check` passed. The temporary viewport was restored to 1280×720 with the dark theme selected. No deployment, commit, or push was performed.
+
+## Session: 2026-10-09 — Shared Theme State for Field Blog Details
+
+### Current Status
+- **Phase:** 18 - Shared Theme State for Field Blog Details
+
+### Actions Taken
+- Corrected the page-family diagnosis using the supplied screenshot: the reported `/blog/release-week-guide-video-roundup` page is a Field Wiki route, not the root-template Blog index.
+- Confirmed it loads the independent `assets/wiki.css` dark-only palette and `assets/site.js`, neither of which reads the root site's `permafrost-template-theme` preference.
+- Added shared-theme support to `assets/site.js`: Field routes now apply the root theme key before rendering, set matching browser theme colour, and add light palette overrides for the body, header, inputs, hero, and map. The injected video module now uses shared colour variables rather than hard-coded dark panel colours.
+- Browser-tested the supplied Blog detail after selecting light on Home: it now has a light body, dark readable text, a light header, the shared light state, and no overflow.
+- Confirmed the same shared light theme on a representative Field article, including its injected video panel. Mobile validation of the referenced Blog detail passed at 390px with a 347px article, correct article/aside order, and no horizontal overflow.
+
+### Test Results
+- After selecting light on Home, the supplied Blog detail renders `data-theme="light"`, `rgb(237, 248, 251)` body background, `rgb(16, 39, 52)` readable body text, and a `rgba(247, 252, 254, 0.9)` header.
+- A representative Field article shares the light theme and resolves its injected video panel against the white shared panel token.
+- At 390px, the supplied Blog detail has a 347px content column, the aside follows the article, and there is no horizontal overflow.
+- `node --check` passed for `dist/assets/site.js` and `dist/main.js`; `git diff --check` passed. The temporary browser viewport was restored to 1280×720 with the shared light theme still selected.
+
+### Errors
+- A source scan passed a pattern beginning with `--` to `rg` without the option terminator, so ripgrep treated it as an option. The failed scan changed no files; subsequent targeted inspection will use a safe pattern form.
+- The browser evaluation sandbox does not expose `localStorage`, so an assertion that attempted to read it threw after the visual theme click. Verified the click through its changed accessible label, then tested the destination's computed style and `data-theme` instead.
