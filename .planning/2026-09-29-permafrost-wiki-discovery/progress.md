@@ -81,3 +81,58 @@
 - Added a repeatable SEO generator for all static pages and updated the visible Wiki and Guide headings so target phrases describe the page rather than acting as hidden keyword stuffing.
 - Validated the legacy and Field Wiki Guide routes in a browser: both publish the `Permafrost Guide | Survival, Cold and Co-op | Permafrost Wiki` title, and the Field guide has a visible, semantic `Permafrost Guide` H1.
 - Re-ran the repeatable SEO generator and checked every generated HTML document. All 27 pages now carry exactly one title, description, canonical URL, and JSON-LD record; the sitemap contains 26 unique canonical URLs. JavaScript syntax and whitespace checks also pass.
+
+## Session: 2026-10-09
+
+### Current Status
+- **Phase:** 12 - Recent Guide Blog Expansion
+
+### Actions Taken
+- Restored the active file-based plan and reviewed the existing site architecture.
+- Confirmed the working tree is clean and identified existing Wiki coverage that can be reused.
+- Defined the missing content topics and the need for a Blog route in both navigation systems.
+- Traced both navigation renderers, the reusable card/article/video components, and the SEO generator. Chose a shared data-driven Blog index plus static post shells so the new content remains bilingual, crawlable, and consistent with the existing site.
+- Added a shared bilingual data set for eight Blog posts covering the release-week roundup, first campfire/tools, pre-play tips, Day 1, crafting/hunting/trading, Bone Cave/dog onboarding, base building, and co-op.
+- Added Blog to both navigation systems, created the Blog index renderer and filters, created eight static post routes, and linked relevant Blog posts back into existing Wiki article sidebars.
+
+### Errors
+- The first JavaScript syntax check caught an extra closing parenthesis in the Blog search predicate. Rewrote the predicate with an explicit `searchable` value before running the generator.
+- The local static server could not bind under the restricted sandbox; it started successfully with the approved localhost preview permission.
+
+### Test Results
+- SEO generation completed for 36 HTML pages and 35 canonical routes; the sitemap includes the Blog index and all eight posts.
+- Browser validation passed for the Blog index in Chinese and English. All eight cards, filters, navigation links, dates, channels, and footer links are visible.
+- All eight Blog posts plus Blog, Guides, and Essential Tools routes returned HTTP 200 from the local preview.
+- The first-campfire post passed English and Chinese browser checks with the community-video embed, source attribution, build warning, Wiki links, and Blog navigation present.
+- The Essential Tools Wiki article correctly displays three contextually related recent Blog links, verifying the cross-link integration.
+- Mobile browser QA passed at 390×844 for both the Blog index and the three-video release-week roundup; the temporary viewport override was reset afterward.
+- Blog search interaction passed: `campfire` filters eight posts down to the single matching starter-tools article.
+- Final static validation passed: all four JavaScript files parse, the SEO generator is idempotent, all 36 HTML pages have exactly one title/description/canonical/JSON-LD block, the sitemap contains 35 canonical URLs, and `git diff --check` is clean.
+- Data integrity validation passed for 16 Wiki articles, 8 Blog posts, 8 Blog route shells, 10 embedded community videos, and 27 Blog-to-Wiki related links.
+- Final browser review confirms the Blog feed is sorted newest-first.
+
+## Session: 2026-10-09 — GSC Keyword Optimization
+
+### Current Status
+- **Phase:** 13 - GSC Keyword Landing-Page Optimization
+
+### Actions Taken
+- Restored the active plan and reviewed the existing Blog and SEO work without discarding the dirty working tree.
+- Verified the screenshot values and mapped the two Wiki queries to the homepage and the coop query to the existing co-op survival article.
+- Checked the shared SEO cache; no cached analysis is present, so the implementation is based on fresh local inspection.
+- Updated both homepage renderers to use a visible `Permafrost Game Wiki` H1/copy, retain natural `Permafrost Wiki` language, and give the co-op guide a prominent contextual link.
+- Updated the co-op content record and SEO metadata around a clearer `Permafrost co-op guide` heading, 1–4 player intent, and one natural use of the unhyphenated `Permafrost coop` query variant.
+- Updated crawler-visible homepage fallback content and WebSite schema alternate names so the raw HTML, rendered UI, and structured data express the same target topics.
+
+### Errors
+- The local static preview server could not bind under the restricted sandbox. It started successfully after requesting the established localhost-only preview permission.
+- The in-app browser tab object did not support a guessed `getState()` method. Switched to the documented global state inventory and a dedicated preview tab rather than repeating the unsupported call.
+
+### Test Results
+- JavaScript syntax checks passed for both renderers, the shared content data, and the SEO generator.
+- SEO generation completed for 36 pages and 35 canonical URLs; the second run changed zero HTML pages.
+- All 36 HTML files contain exactly one title, description, canonical link, and valid JSON-LD block.
+- Target-page assertions passed for the homepage title/H1/Wiki and co-op links, schema alternate names, and the co-op page title/H1/unhyphenated query variant.
+- `git diff --check` passed.
+- Browser rendering passed for the homepage and co-op article. Accessibility inspection confirmed the intended title, H1, descriptive internal links, co-op copy, official source video, and related Blog link.
+- The localhost preview server was stopped after QA. Phase 13 is complete locally; no deployment, commit, or push was performed.

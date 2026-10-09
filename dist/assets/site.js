@@ -13,12 +13,25 @@
   const t = (en, zh) => isZh() ? zh : en;
   const read = (item, key) => isZh() ? item[`${key}Zh`] : item[key];
   const route = (slug) => `/articles/${slug}.html`;
+  const blogRoute = (slug) => `/blog/${slug}.html`;
   const source = (article) => wiki.sources[article.source];
   const sourceLabel = (article) => t(source(article).label, source(article).zh);
+  const blogCategory = (id) => {
+    const labels = {
+      roundup: ['Roundup', '视频汇总'],
+      'getting-started': ['Getting started', '开局'],
+      walkthrough: ['Walkthrough', '流程'],
+      systems: ['Systems', '系统'],
+      'base-building': ['Base building', '基地建造'],
+      'co-op': ['Co-op', '合作']
+    };
+    return t(...(labels[id] || [id, id]));
+  };
 
   const navigation = [
     ['home', '/', 'Home', '首页'],
     ['guides', '/guides/', 'Survival', '生存'],
+    ['blog', '/blog.html', 'Blog', '攻略博客'],
     ['world', '/world/', 'World & Story', '世界与剧情'],
     ['library', '/library/', 'Library', '资料库'],
     ['map', '/map/', 'Atlas', '地图集'],
@@ -60,10 +73,16 @@
     return `<section class="official-video"><div><p class="eyebrow">${t('Official video', '官方视频')}</p><h2>${title}</h2><p>${description}</p><a href="${url}" target="_blank" rel="noreferrer">${t('Watch on YouTube', '在 YouTube 上观看')}</a></div><div class="official-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${video.id}?rel=0" title="${title}" loading="eager" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>`;
   }
 
+  function blogVideoSection(video) {
+    const title = read(video, 'title');
+    const url = `https://www.youtube.com/watch?v=${video.id}`;
+    return `<section class="official-video community-video"><div><p class="eyebrow">${t('Community video', '社区视频')}</p><h2>${title}</h2><p>${video.channel} · ${video.published} · ${video.duration}</p><a href="${url}" target="_blank" rel="noreferrer">${t('Watch on YouTube', '在 YouTube 上观看')}</a></div><div class="official-video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${video.id}?rel=0" title="${title}" loading="lazy" referrerpolicy="origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>`;
+  }
+
   function renderHeader() {
     document.querySelector('#site-header').innerHTML = `<header class="site-header"><div class="wrap header-inner">
       <a class="brand" href="/"><span class="brand-mark">✦</span><span>PERMAFROST<small>FIELD WIKI</small></span></a>
-      <nav class="nav" aria-label="${t('Primary navigation', '主导航')}">${navigation.map(([key, href, en, zh]) => `<a href="${href}" class="${page === key ? 'active' : ''}">${t(en, zh)}</a>`).join('')}</nav>
+      <nav class="nav" aria-label="${t('Primary navigation', '主导航')}">${navigation.map(([key, href, en, zh]) => `<a href="${href}" class="${page === key || (key === 'blog' && page === 'blog-post') ? 'active' : ''}">${t(en, zh)}</a>`).join('')}</nav>
       <button type="button" class="locale" id="locale-toggle" aria-label="${t('Switch to Chinese', '切换到英文')}">${isZh() ? 'EN' : '中文'}</button>
     </div></header>`;
     document.querySelector('#locale-toggle').addEventListener('click', () => {
@@ -81,15 +100,15 @@
   }
 
   function renderHome() {
-    const featured = wiki.articles.filter((article) => ['early-access-release', 'cold-and-weather', 'shelter-network', 'canine-companion', 'rook-and-signal', 'early-access-scope'].includes(article.slug));
+    const featured = wiki.articles.filter((article) => ['co-op-survival', 'cold-and-weather', 'shelter-network', 'canine-companion', 'rook-and-signal', 'early-access-release'].includes(article.slug));
     return `<section class="hero"><div class="wrap">
-      <p class="eyebrow">PERMAFROST FIELD WIKI</p>
-      <h1>PERMAFROST<br><span>WIKI</span></h1>
-      <p class="hero-copy">${t('Explore the Permafrost Wiki for game information, story, survival systems, and official announcements. Start with the Permafrost Guide for cold, shelter, tools, and co-op.', '浏览《永冻纪元 - Permafrost》游戏 Wiki，查看游戏资料、剧情、生存系统与官方公告；生存指南涵盖严寒、避难所、工具与合作玩法。')}</p>
+      <p class="eyebrow">PERMAFROST WIKI</p>
+      <h1>PERMAFROST<br><span>GAME WIKI</span></h1>
+      <p class="hero-copy">${t('Explore the Permafrost Game Wiki for source-linked game information, story, survival systems, and official announcements. Start with survival guides or the 1–4 player co-op guide.', '浏览《永冻纪元 - Permafrost》游戏 Wiki，查看带来源链接的游戏资料、剧情、生存系统与官方公告；可从生存指南或 1–4 人合作指南开始。')}</p>
       <div class="meta-strip"><span class="meta-chip safe">${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</span><span class="meta-chip">${t('1–4 player co-op', '1–4 人合作')}</span><span class="meta-chip">Steam</span></div>
     </div></section>
     <main class="wrap">
-      <section class="section">${sectionHead(t('Browse the Permafrost Wiki', '浏览 Permafrost Wiki'), t('Permafrost Wiki sections', 'Permafrost Wiki 分区'), t('Browse survival systems, world and story, and the full Permafrost Wiki article library.', '浏览生存系统、世界与剧情，以及完整的 Permafrost Wiki 条目库。'))}
+      <section class="section">${sectionHead(t('Browse the Permafrost Wiki', '浏览 Permafrost Wiki'), t('Permafrost Wiki sections', 'Permafrost Wiki 分区'), t('Browse survival systems, online co-op, world and story, and the full Permafrost Wiki article library.', '浏览生存系统、在线合作、世界与剧情，以及完整的 Permafrost Wiki 条目库。'))}
         <div class="grid three">
           <a class="card-link" href="/guides/"><article class="card"><span class="category">${t('Survival', '生存')}</span><h3>${t('Permafrost Guide: Survival', 'Permafrost 生存指南')}</h3><p>${t('Use the Permafrost Guide for cold, shelter networks, exploration, companions, and co-op.', '使用 Permafrost 生存指南查看严寒、避难所网络、探索、伙伴和合作。')}</p></article></a>
           <a class="card-link" href="/world/"><article class="card"><span class="category">${t('World', '世界')}</span><h3>${t('World & story', '世界与剧情')}</h3><p>${t('Rook, the signal, The Shattering, predators, and factions.', 'Rook、信号、The Shattering、掠食动物和势力。')}</p></article></a>
@@ -141,12 +160,27 @@
     ensureVideoStyles();
     const articleSource = source(article);
     const related = wiki.articles.filter((item) => item.slug !== article.slug && item.category === article.category).slice(0, 4);
+    const practicalGuides = (wiki.blogPosts || []).filter((post) => post.relatedArticles.includes(article.slug)).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
     return `<main class="wrap"><div class="article-layout"><article class="article">
       <p class="eyebrow">${read(article, 'category')}</p><h1>${read(article, 'title')}</h1><p class="lead">${read(article, 'lead')}</p>
       <h2>${t('Overview', '概览')}</h2><ul class="fact-list">${(isZh() ? article.factsZh : article.facts).map((fact) => `<li>${fact}</li>`).join('')}</ul>
       ${(article.videos || []).map(videoSection).join('')}
       <div class="source-box"><p class="eyebrow">${t('Source', '来源')}</p><p><a href="${articleSource.url}" target="_blank" rel="noreferrer">${t(articleSource.label, articleSource.zh)}</a></p></div>
-    </article><aside class="aside"><h3>${t('Related reading', '相关阅读')}</h3><ul class="side-list">${related.map((item) => `<li><a href="${route(item.slug)}">${read(item, 'title')}</a></li>`).join('')}</ul><a href="/library/">${t('Browse library', '浏览资料库')}</a></aside></div></main>`;
+    </article><aside class="aside"><h3>${t('Related reading', '相关阅读')}</h3><ul class="side-list">${related.map((item) => `<li><a href="${route(item.slug)}">${read(item, 'title')}</a></li>`).join('')}</ul>${practicalGuides.length ? `<h3>${t('Recent practical guides', '近期实用攻略')}</h3><ul class="side-list">${practicalGuides.map((post) => `<li><a href="${blogRoute(post.slug)}">${read(post, 'title')}</a></li>`).join('')}</ul>` : ''}<a href="/library/">${t('Browse library', '浏览资料库')}</a></aside></div></main>`;
+  }
+
+  function renderBlogPost() {
+    const post = (wiki.blogPosts || []).find((item) => item.slug === document.body.dataset.blog);
+    if (!post) return `<main class="wrap"><section class="section"><h1>${t('Blog post not found', '未找到博客文章')}</h1></section></main>`;
+    ensureVideoStyles();
+    const relatedArticles = post.relatedArticles.map((slug) => wiki.articles.find((article) => article.slug === slug)).filter(Boolean);
+    const relatedPosts = wiki.blogPosts.filter((item) => item.slug !== post.slug && item.category === post.category).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+    return `<main class="wrap"><div class="article-layout"><article class="article blog-post">
+      <p class="eyebrow">${blogCategory(post.category)} · ${post.date}</p><h1>${read(post, 'title')}</h1><p class="lead">${read(post, 'lead')}</p>
+      <h2>${t('What this guide covers', '本篇内容')}</h2><ul class="fact-list">${(isZh() ? post.pointsZh : post.points).map((point) => `<li>${point}</li>`).join('')}</ul>
+      ${(post.videos || []).map(blogVideoSection).join('')}
+      <div class="source-box"><p class="eyebrow">${t('Build note', '版本说明')}</p><p>${t('Community videos may show preview or playtest builds. Check the current Early Access build before relying on quest steps, prompts, or balance details.', '社区视频可能展示预览或试玩版本。涉及任务步骤、操作提示或数值平衡时，请以当前抢先体验版本为准。')}</p></div>
+    </article><aside class="aside"><h3>${t('Related Wiki chapters', '相关 Wiki 章节')}</h3><ul class="side-list">${relatedArticles.map((article) => `<li><a href="${route(article.slug)}">${read(article, 'title')}</a></li>`).join('')}</ul>${relatedPosts.length ? `<h3>${t('More from the Blog', '更多博客内容')}</h3><ul class="side-list">${relatedPosts.map((item) => `<li><a href="${blogRoute(item.slug)}">${read(item, 'title')}</a></li>`).join('')}</ul>` : ''}<a href="/blog.html">${t('Browse all Blog posts', '浏览全部博客文章')}</a></aside></div></main>`;
   }
 
   function wireLibrary() {
@@ -198,7 +232,7 @@
     ensureFieldScaleStyles();
     renderHeader(); renderFooter();
     const app = document.querySelector('#app');
-    app.innerHTML = page === 'home' ? renderHome() : page === 'guides' ? renderGuides() : page === 'world' ? renderWorld() : page === 'library' ? renderLibrary() : page === 'map' ? renderMap() : page === 'updates' ? renderUpdates() : page === 'article' ? renderArticle() : renderHome();
+    app.innerHTML = page === 'home' ? renderHome() : page === 'guides' ? renderGuides() : page === 'world' ? renderWorld() : page === 'library' ? renderLibrary() : page === 'map' ? renderMap() : page === 'updates' ? renderUpdates() : page === 'article' ? renderArticle() : page === 'blog-post' ? renderBlogPost() : renderHome();
     wireLibrary();
   }
 

@@ -16,6 +16,17 @@
   const t = (en, zh) => isZh() ? zh : en;
   const read = (item, key) => isZh() ? item[`${key}Zh`] : item[key];
   const sourceFor = (key) => D.sources[key];
+  const blogCategory = (id) => {
+    const labels = {
+      roundup: ['Roundup', '视频汇总'],
+      'getting-started': ['Getting started', '开局'],
+      walkthrough: ['Walkthrough', '流程'],
+      systems: ['Systems', '系统'],
+      'base-building': ['Base building', '基地建造'],
+      'co-op': ['Co-op', '合作']
+    };
+    return t(...(labels[id] || [id, id]));
+  };
 
   function esc(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, (ch) => ({
@@ -38,6 +49,17 @@
       <p>${esc(read(article, 'lead'))}</p>
       <ul class="signal-list">${facts.map((fact) => `<li>${esc(fact)}</li>`).join('')}</ul>
       <p class="database-source"><a href="articles/${esc(article.slug)}.html">${esc(t('Read guide', '阅读指南'))}</a><span aria-hidden="true"> · </span><a href="${esc(source.url)}" target="_blank" rel="noreferrer">${esc(t(source.label, source.zh))}</a></p>
+    </article>`;
+  }
+
+  function blogCard(post) {
+    const videos = post.videos || [];
+    const channels = [...new Set(videos.map((video) => video.channel))].join(' · ');
+    return `<article class="database-entity blog-card" data-blog-category="${esc(post.category)}" data-search="${esc(`${post.title} ${post.titleZh} ${post.lead} ${post.leadZh} ${channels}`.toLowerCase())}">
+      <div class="blog-card-meta"><time datetime="${esc(post.date)}">${esc(post.date)}</time><span>${esc(blogCategory(post.category))}</span></div>
+      <h3><a href="blog/${esc(post.slug)}.html">${esc(read(post, 'title'))}</a></h3>
+      <p>${esc(read(post, 'lead'))}</p>
+      <div class="blog-card-footer"><span>${esc(channels)}</span><a href="blog/${esc(post.slug)}.html">${esc(t('Read guide', '阅读攻略'))}</a></div>
     </article>`;
   }
 
@@ -82,6 +104,7 @@
     const nav = [
       ['home', 'index.html', 'Home', '首页'],
       ['news', 'news.html', 'News', '公告'],
+      ['blog', 'blog.html', 'Blog', '攻略博客'],
       ['guides', 'guides.html', 'Survival', '生存'],
       ['database', 'database.html', 'Library', '资料库'],
       ['patch', 'patch.html', 'Release', '发售'],
@@ -97,7 +120,7 @@
       try { localStorage.setItem(LOCALE_KEY, locale); } catch (_) {}
       window.location.reload();
     });
-    html('[data-footer]', `<div><strong>PERMAFROST WIKI</strong><p>${t('Unofficial community reference for Permafrost.', '《永冻纪元 - Permafrost》非官方社区资料站。')}</p></div><nav aria-label="${t('Footer navigation', '页脚导航')}"><a href="https://store.steampowered.com/app/2254990/Permafrost/" target="_blank" rel="noreferrer">${t('Steam Store', 'Steam 商店')}</a><a href="about.html#sources">${t('Sources', '来源')}</a><a href="about.html#disclaimer">${t('Disclaimer', '免责声明')}</a></nav>`);
+    html('[data-footer]', `<div><strong>PERMAFROST WIKI</strong><p>${t('Unofficial community reference for Permafrost.', '《永冻纪元 - Permafrost》非官方社区资料站。')}</p></div><nav aria-label="${t('Footer navigation', '页脚导航')}"><a href="blog.html">${t('Blog', '攻略博客')}</a><a href="https://store.steampowered.com/app/2254990/Permafrost/" target="_blank" rel="noreferrer">${t('Steam Store', 'Steam 商店')}</a><a href="about.html#sources">${t('Sources', '来源')}</a><a href="about.html#disclaimer">${t('Disclaimer', '免责声明')}</a></nav>`);
 
     const toggle = document.querySelector('[data-nav-toggle]');
     if (toggle) toggle.textContent = t('Menu', '菜单');
@@ -133,7 +156,7 @@
   }
 
   function renderHome() {
-    html('[data-hero]', `<p class="eyebrow">PERMAFROST WIKI</p><h1>${t('Permafrost Wiki', '《永冻纪元 - Permafrost》游戏 Wiki')}</h1><p class="hero-intro">${t('Explore the Permafrost Wiki for game information, story, survival systems, and official announcements. Start with the Permafrost Guide for cold, shelter, tools, and co-op.', '浏览《永冻纪元 - Permafrost》游戏 Wiki，查看游戏资料、剧情、生存系统与官方公告；生存指南涵盖严寒、避难所、工具与合作玩法。')}</p><div class="hero-actions"><a class="button primary" href="database.html">${t('Browse the Permafrost Wiki', '浏览 Wiki 资料库')}</a><a class="button secondary" href="news.html">${t('Official news', '官方公告')}</a></div><div class="hero-facts"><span>${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</span><span>${t('1–4 player co-op', '1–4 人合作')}</span><span>Steam</span></div>`);
+    html('[data-hero]', `<p class="eyebrow">PERMAFROST WIKI</p><h1>${t('Permafrost Game Wiki', '《永冻纪元 - Permafrost》游戏 Wiki')}</h1><p class="hero-intro">${t('Explore the Permafrost Game Wiki for source-linked game information, story, survival systems, and official announcements. Start with survival guides or the 1–4 player co-op guide.', '浏览《永冻纪元 - Permafrost》游戏 Wiki，查看带来源链接的游戏资料、剧情、生存系统与官方公告；可从生存指南或 1–4 人合作指南开始。')}</p><div class="hero-actions"><a class="button primary" href="database.html">${t('Browse the Permafrost Wiki', '浏览 Wiki 资料库')}</a><a class="button secondary" href="articles/co-op-survival.html">${t('Permafrost co-op guide', 'Permafrost 合作指南')}</a></div><div class="hero-facts"><span>${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</span><span>${t('1–4 player co-op', '1–4 人合作')}</span><span>Steam</span></div>`);
     html('[data-status]', `<div class="status-copy"><p class="eyebrow">${t('Release', '发售')}</p><h2>${t('PC Early Access · 9 October 2026', 'PC 抢先体验 · 2026 年 10 月 9 日')}</h2><p>${t('Steam, GOG.com, and the Epic Games Store are named as PC storefronts.', 'Steam、GOG.com 和 Epic Games Store 被列为 PC 平台。')}</p></div><div class="status-pills"><a class="pill link" href="patch.html">${t('Release details', '发售信息')}</a></div>`);
     const facts = [
       [t('Game', '游戏'), 'Permafrost', t('Story-driven survival sandbox', '剧情驱动的生存沙盒')],
@@ -143,11 +166,12 @@
     ];
     const routes = [
       ['Survival', '生存', 'Permafrost Guide: Survival', 'Permafrost 生存指南', 'Use the Permafrost Guide for cold, shelters, exploration, companions, and co-op.', '使用 Permafrost 生存指南查看严寒、避难所、探索、伙伴与合作玩法。', 'guides.html'],
+      ['Blog', '攻略博客', 'Release-week practical guides', '发售周实用攻略', 'Browse recent playtest tutorials, walkthroughs, system observations, and video roundups.', '浏览近期试玩教程、流程、系统观察与视频汇总。', 'blog.html'],
       ['World', '世界', 'Article library', '资料库', 'Browse all current Permafrost articles.', '浏览当前《永冻纪元 - Permafrost》资料条目。', 'database.html'],
       ['Release', '发售', 'Release information', '发售信息', 'Early Access timing and planned scope.', '抢先体验时间与计划内容。', 'patch.html']
     ];
-    const featured = D.articles.filter((article) => ['early-access-release', 'rook-and-signal', 'cold-and-weather', 'shelter-network'].includes(article.slug));
-    html('[data-home-content]', `<section class="content-section" id="glance">${sectionHead(t('About this Wiki', 'Wiki 概览'), t('Permafrost Wiki at a glance', '《永冻纪元 - Permafrost》Wiki 概览'), t('The Permafrost Wiki is a community reference for game systems, story, survival, and official updates.', '《永冻纪元 - Permafrost》Wiki 是涵盖游戏系统、剧情、生存内容与官方动态的社区资料库。'))}<div class="fact-grid">${facts.map(([label, value, note]) => `<div class="fact-card"><span>${esc(label)}</span><strong>${esc(value)}</strong><p>${esc(note)}</p></div>`).join('')}</div></section><section class="content-section" id="routes">${sectionHead(t('Sections', '分区'), t('Browse the Permafrost Wiki', '浏览 Permafrost Wiki'), t('Choose a Permafrost Wiki topic or start with the Permafrost Guide.', '选择 Permafrost Wiki 主题，或从生存指南开始浏览。'))}<div class="guide-link-grid">${routes.map(([eyebrowEn, eyebrowZh, titleEn, titleZh, bodyEn, bodyZh, href]) => `<a href="${href}"><span>${esc(t(eyebrowEn, eyebrowZh))}</span><strong>${esc(t(titleEn, titleZh))}</strong><p>${esc(t(bodyEn, bodyZh))}</p></a>`).join('')}</div></section><section class="content-section" id="latest">${sectionHead(t('Featured', '精选'), t('Featured Permafrost Guides', '精选 Permafrost 指南'), t('A selection of current Permafrost Wiki entries.', '当前 Permafrost Wiki 条目精选。'))}<div class="database-grid">${featured.map(articleCard).join('')}</div></section><section class="content-section" id="news">${sectionHead(t('News', '公告'), t('Official announcements', '官方公告'), t('Recent Permafrost release and world updates.', '近期《永冻纪元 - Permafrost》发售与世界动态。'))}<div class="news-stack">${D.news.map(newsCard).join('')}</div></section>`);
+    const featured = D.articles.filter((article) => ['co-op-survival', 'rook-and-signal', 'cold-and-weather', 'shelter-network'].includes(article.slug));
+    html('[data-home-content]', `<section class="content-section" id="glance">${sectionHead(t('About this Wiki', 'Wiki 概览'), t('Permafrost Wiki at a glance', '《永冻纪元 - Permafrost》Wiki 概览'), t('This Permafrost Game Wiki is a community reference for game systems, story, survival, co-op, and official updates.', '《永冻纪元 - Permafrost》游戏 Wiki 是涵盖游戏系统、剧情、生存、合作玩法与官方动态的社区资料库。'))}<div class="fact-grid">${facts.map(([label, value, note]) => `<div class="fact-card"><span>${esc(label)}</span><strong>${esc(value)}</strong><p>${esc(note)}</p></div>`).join('')}</div></section><section class="content-section" id="routes">${sectionHead(t('Sections', '分区'), t('Browse the Permafrost Wiki', '浏览 Permafrost Wiki'), t('Choose a Permafrost Wiki topic or start with the Permafrost Guide.', '选择 Permafrost Wiki 主题，或从生存指南开始浏览。'))}<div class="guide-link-grid">${routes.map(([eyebrowEn, eyebrowZh, titleEn, titleZh, bodyEn, bodyZh, href]) => `<a href="${href}"><span>${esc(t(eyebrowEn, eyebrowZh))}</span><strong>${esc(t(titleEn, titleZh))}</strong><p>${esc(t(bodyEn, bodyZh))}</p></a>`).join('')}</div></section><section class="content-section" id="latest">${sectionHead(t('Featured', '精选'), t('Featured Permafrost Guides', '精选 Permafrost 指南'), t('A selection of current Permafrost Wiki entries, including the online co-op guide.', '当前 Permafrost Wiki 条目精选，包括在线合作指南。'))}<div class="database-grid">${featured.map(articleCard).join('')}</div></section><section class="content-section" id="news">${sectionHead(t('News', '公告'), t('Official announcements', '官方公告'), t('Recent Permafrost release and world updates.', '近期《永冻纪元 - Permafrost》发售与世界动态。'))}<div class="news-stack">${D.news.map(newsCard).join('')}</div></section>`);
   }
 
   function newsCard(item) {
@@ -190,11 +214,46 @@
       ['shelters', 'Survival', '生存', 'Shelters and exploration', '避难所与探索', ['shelter-network', 'exploration-progression']],
       ['companions', 'Companions', '伙伴', 'Companions and co-op', '伙伴与合作', ['canine-companion', 'co-op-survival']]
     ];
-    html('[data-guides]', groups.map(([id, eyebrowEn, eyebrowZh, titleEn, titleZh, slugs]) => {
+    const guideGroups = groups.map(([id, eyebrowEn, eyebrowZh, titleEn, titleZh, slugs]) => {
       const entries = D.articles.filter((article) => slugs.includes(article.slug));
       const videos = entries.flatMap((article) => article.videos || []);
       return `<section class="content-section" id="${id}">${sectionHead(t(eyebrowEn, eyebrowZh), t(titleEn, titleZh), t('Watch the official videos and read the supporting Wiki entries.', '观看官方视频并阅读相应的 Wiki 条目。'))}${videos.length ? `<div class="guide-video-grid">${videos.map(guideVideo).join('')}</div>` : ''}<div class="database-grid">${entries.map(articleCard).join('')}</div></section>`;
-    }).join(''));
+    }).join('');
+    const recent = [...(D.blogPosts || [])].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
+    html('[data-guides]', `${guideGroups}<section class="content-section" id="recent-guides">${sectionHead(t('Recent guides', '近期攻略'), t('Release-week practical guides', '发售周实用攻略'), t('Community videos and walkthroughs from the October playtest and release week.', '来自 10 月试玩与发售周的社区视频和流程攻略。'))}<div class="database-grid">${recent.map(blogCard).join('')}</div></section>`);
+  }
+
+  function renderBlog() {
+    html('[data-page-heading]', pageHead(t('Blog', '攻略博客'), t('Permafrost guides and playtest notes', 'Permafrost 攻略与试玩笔记'), t('Recent tutorials, walkthroughs, system observations, and curated videos.', '近期教程、流程、系统观察与精选视频。')));
+    const posts = [...(D.blogPosts || [])].sort((a, b) => b.date.localeCompare(a.date));
+    const categories = [...new Set(posts.map((post) => post.category))];
+    const labels = new Map(posts.map((post) => [post.category, blogCategory(post.category)]));
+    html('[data-blog-page]', `<section class="content-section" id="latest">${sectionHead(t('October 2026', '2026 年 10 月'), t('Recent practical guides', '近期实用攻略'), t('Playtest and preview videos are labeled clearly because Early Access behavior may change.', '试玩与预览视频均明确标注，因为抢先体验中的表现可能变化。'))}<div class="list-toolbar"><div class="database-controls"><label><span>${t('Search', '搜索')}</span><input type="search" data-blog-search placeholder="${t('Campfire, crafting, co-op, dog…', '篝火、制作、合作、狗伙伴……')}" /></label><output data-blog-count aria-live="polite"></output></div><div class="filter-tabs" data-blog-tabs role="group" aria-label="${t('Blog filter', '博客筛选')}"></div></div><div class="database-grid" data-blog-list></div><p class="database-empty" data-blog-empty hidden>${t('No matching guide.', '没有匹配的攻略。')}</p></section>`);
+    html('[data-blog-tabs]', [['all', t('All', '全部')], ...categories.map((category) => [category, labels.get(category)])].map(([id, label], index) => `<button type="button" data-blog-filter="${esc(id)}"${index === 0 ? ' data-active="true"' : ''}>${esc(label)}</button>`).join(''));
+    const list = document.querySelector('[data-blog-list]');
+    const count = document.querySelector('[data-blog-count]');
+    const input = document.querySelector('[data-blog-search]');
+    let category = 'all';
+    const apply = () => {
+      const query = input?.value.trim().toLowerCase() || '';
+      const matches = posts.filter((post) => {
+        const searchable = `${post.title} ${post.titleZh} ${post.lead} ${post.leadZh} ${(post.videos || []).map((video) => video.channel).join(' ')}`.toLowerCase();
+        return (category === 'all' || post.category === category) && (!query || searchable.includes(query));
+      });
+      html(list, matches.map(blogCard).join(''));
+      if (count) count.textContent = `${matches.length}`;
+      const empty = document.querySelector('[data-blog-empty]');
+      if (empty) empty.hidden = matches.length !== 0;
+    };
+    document.querySelector('[data-blog-tabs]')?.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-blog-filter]');
+      if (!button) return;
+      category = button.dataset.blogFilter;
+      document.querySelectorAll('[data-blog-filter]').forEach((item) => item.dataset.active = item === button ? 'true' : 'false');
+      apply();
+    });
+    input?.addEventListener('input', apply);
+    apply();
   }
 
   function renderLibrary() {
@@ -243,6 +302,7 @@
     initChrome(); initTheme();
     if (page === 'home') renderHome();
     if (page === 'news') renderNews();
+    if (page === 'blog') renderBlog();
     if (page === 'guides') renderGuides();
     if (page === 'database') renderLibrary();
     if (page === 'patch') renderRelease();

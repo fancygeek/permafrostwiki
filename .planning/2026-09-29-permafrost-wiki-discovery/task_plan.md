@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 11
+Phase 13
 
 ## Phases
 
@@ -75,6 +75,22 @@ Phase 11
 - [ ] Check every HTML route for SEO metadata and publish the update
 - **Status:** in progress
 
+### Phase 12: Recent Guide Blog Expansion
+- [x] Map the October 1–8 YouTube guide topics onto existing Wiki chapters without duplicating established coverage
+- [x] Add missing early-game, crafting, base-building, co-op, and playtest guide content with clearly attributed video sources
+- [x] Add a Blog index and Blog item to both top-navigation systems
+- [x] Extend metadata and sitemap generation for all new routes
+- [x] Validate desktop/mobile rendering, bilingual navigation, links, embeds, and JavaScript syntax
+- **Status:** complete
+
+### Phase 13: GSC Keyword Landing-Page Optimization
+- [x] Confirm the screenshot queries, impressions, and current target-page coverage
+- [x] Strengthen homepage relevance for `permafrost game wiki` and `permafrost wiki`
+- [x] Strengthen the co-op article for `permafrost coop` while keeping natural reader-facing language
+- [x] Improve contextual internal links and WebSite structured-data naming
+- [x] Regenerate and validate SEO metadata, static HTML, and representative rendered pages
+- **Status:** complete
+
 ## Decisions Made
 | Decision | Rationale |
 |----------|-----------|
@@ -96,3 +112,8 @@ Phase 11
 | A stale browser tab was not available to the current session | Created a fresh local-preview tab for the required tool-capability check. |
 | Existing-site workflow rejected an expired source credential | Minted a new credential for the same Site, then retried the opening workflow with approved network access. |
 | Custom-domain deployment lagged behind the Site publication | The GitHub-connected Cloudflare Pages deployment needs the source branch pushed separately. |
+| Initial Blog search predicate had one extra closing parenthesis | Rewrote the predicate as a block with an explicit searchable string before continuing validation. |
+| Local preview server could not bind inside the restricted sandbox | Re-ran the same localhost-only preview with the approved server prefix. |
+| Initial local HTTP loop used unavailable `curl` PATH resolution and zsh's read-only `status` name | Used `/usr/bin/curl`, renamed the variable to `http_code`, and ran the localhost-only check with approved access. |
+| Phase 13 local preview server could not bind inside the restricted sandbox | Re-ran the localhost-only server with the already established approved `python3 -m http.server` scope. |
+| Tried an unsupported `tab.getState()` method while re-reading the in-app preview | Used the documented global state inventory and then opened a dedicated hidden preview tab, which returned the page accessibility tree directly. |

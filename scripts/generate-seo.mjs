@@ -10,8 +10,8 @@ const siteId = `${origin}/#website`;
 
 const pages = {
   '/': {
-    title: 'Permafrost Wiki | Permafrost Guide, Survival, News and Game Information',
-    description: 'Permafrost Wiki for game information, story, survival systems, official videos, and release news. Start with the Permafrost Guide for cold, shelter, tools, and co-op.'
+    title: 'Permafrost Game Wiki | Survival, Co-op, Guides and News',
+    description: 'Explore the Permafrost Game Wiki for source-linked survival guides, co-op information, story, official videos, and release news.'
   },
   '/guides': {
     title: 'Permafrost Guide | Survival, Cold, Shelter and Co-op',
@@ -36,6 +36,10 @@ const pages = {
   '/news': {
     title: 'Permafrost News and Release Updates | Permafrost Wiki',
     description: 'Read Permafrost news, release information, and official announcements in the Permafrost Wiki.'
+  },
+  '/blog': {
+    title: 'Permafrost Blog | Release-week Guides, Tips and Videos',
+    description: 'Read recent Permafrost guides, playtest walkthroughs, beginner tips, base-building notes, co-op observations, and curated release-week videos.'
   },
   '/updates': {
     title: 'Permafrost News and Release Updates | Permafrost Wiki',
@@ -119,10 +123,10 @@ const articles = {
     description: 'Learn how the Permafrost dog companion carries loot, hauls resources, warns of threats, finds useful items, and responds to a whistle.'
   },
   'co-op-survival': {
-    headline: '1-4 player co-op survival',
+    headline: 'Permafrost co-op guide',
     section: 'Companions and Co-op',
-    title: 'Permafrost Co-op Survival Guide | 1-4 Player Online Play',
-    description: 'Learn about Permafrost online co-op: survive solo or with up to three friends, progress together, and choose story or survival goals.'
+    title: 'Permafrost Co-op Guide | 1-4 Player Online Survival',
+    description: 'Permafrost coop guide for 1-4 player online survival: play solo or with up to three friends, progress together, and choose story or survival goals.'
   },
   'exploration-progression': {
     headline: 'Exploration-gated progression',
@@ -147,6 +151,57 @@ const articles = {
     section: 'Release Information',
     title: 'Permafrost Early Access Scope | Content and Roadmap',
     description: 'See the announced Permafrost Early Access scope, including planned biomes, quests, mechanics, quality-of-life updates, and four-player co-op.'
+  }
+};
+
+const blogPosts = {
+  'release-week-guide-video-roundup': {
+    headline: 'Permafrost release-week guide video roundup',
+    section: 'Permafrost Blog',
+    title: 'Permafrost Release-week Guide Video Roundup',
+    description: 'A curated Permafrost release-week watchlist covering first steps, survival systems, progression, playtest observations, and practical videos.'
+  },
+  'first-campfire-and-starter-tools': {
+    headline: 'First campfire and starter tools',
+    section: 'Permafrost Blog',
+    title: 'Permafrost First Campfire and Starter Tools Guide',
+    description: 'Use this compact Permafrost playtest tutorial to understand the first campfire, starter tools, and opening survival steps.'
+  },
+  'tips-before-you-play': {
+    headline: 'Permafrost tips before you play',
+    section: 'Permafrost Blog',
+    title: 'Permafrost Tips Before You Play | Beginner Guide',
+    description: 'Watch a concise pre-launch Permafrost beginner orientation and continue with source-linked survival and expedition-preparation chapters.'
+  },
+  'day-one-survival-walkthrough': {
+    headline: 'Day 1 survival walkthrough',
+    section: 'Permafrost Blog',
+    title: 'Permafrost Day 1 Survival Walkthrough',
+    description: 'Follow a Permafrost Day 1 playtest covering character setup, gathering, shelter building, survival, and the companion system.'
+  },
+  'crafting-hunting-and-trading-route': {
+    headline: 'Early crafting, hunting, and trading route',
+    section: 'Permafrost Blog',
+    title: 'Permafrost Crafting, Hunting, and Trading Route',
+    description: 'A chaptered Permafrost playtest route covering gathering, blueprints, bow crafting, cooking, trading, Bone Cave, and dog onboarding.'
+  },
+  'dog-companion-and-bone-cave-route': {
+    headline: 'Dog companion and Bone Cave route',
+    section: 'Permafrost Blog',
+    title: 'Permafrost Dog Companion and Bone Cave Route',
+    description: 'Follow a chaptered Permafrost route through Horizon, Liam, Bone Cave, and the first dog-companion sequence.'
+  },
+  'practical-base-building': {
+    headline: 'Practical base building beyond four walls',
+    section: 'Permafrost Blog',
+    title: 'Permafrost Practical Base-building Guide',
+    description: 'Watch a Permafrost survival-difficulty building episode focused on turning a basic structure into a more practical base.'
+  },
+  'co-op-playtest-overview': {
+    headline: 'Three-player co-op playtest overview',
+    section: 'Permafrost Blog',
+    title: 'Permafrost Three-player Co-op Playtest Guide',
+    description: 'Watch a long Permafrost co-op session covering ruins, scavenging, shelter building, progression, and survival with three players.'
   }
 };
 
@@ -176,9 +231,15 @@ function articleSlug(document) {
   return document.match(/\bdata-article=["']([^"']+)["']/i)?.[1];
 }
 
+function blogSlug(document) {
+  return document.match(/\bdata-blog=["']([^"']+)["']/i)?.[1];
+}
+
 function pageMetadata(route, document) {
   const slug = articleSlug(document);
   if (slug && articles[slug]) return { ...articles[slug], kind: 'article', slug };
+  const postSlug = blogSlug(document);
+  if (postSlug && blogPosts[postSlug]) return { ...blogPosts[postSlug], kind: 'blog-post', slug: postSlug };
   if (pages[route]) return pages[route];
   const label = titleFromDocument(document);
   return {
@@ -194,16 +255,27 @@ function fallbackMarkup(route, metadata) {
     return `<li><a href="/articles/${slug}.html">${escapeHtml(article.headline)}</a></li>`;
   }).join('');
 
-  if (metadata.kind === 'article') {
-    return `<main class="wrap"><div class="article-layout"><article class="article"><p class="eyebrow">${escapeHtml(metadata.section)}</p><h1>${escapeHtml(metadata.headline)}</h1><p class="lead">${escapeHtml(metadata.description)}</p><p><a href="/guides/">Browse the Permafrost Guide</a> or <a href="/library/">view all Permafrost Wiki entries</a>.</p></article></div></main>`;
+  const blogLinks = (slugs) => slugs.map((slug) => {
+    const post = blogPosts[slug];
+    return `<li><a href="/blog/${slug}.html">${escapeHtml(post.headline)}</a></li>`;
+  }).join('');
+
+  if (metadata.kind === 'article' || metadata.kind === 'blog-post') {
+    const indexHref = metadata.kind === 'blog-post' ? '/blog.html' : '/guides/';
+    const indexLabel = metadata.kind === 'blog-post' ? 'Browse the Permafrost Blog' : 'Browse the Permafrost Guide';
+    return `<main class="wrap"><div class="article-layout"><article class="article"><p class="eyebrow">${escapeHtml(metadata.section)}</p><h1>${escapeHtml(metadata.headline)}</h1><p class="lead">${escapeHtml(metadata.description)}</p><p><a href="${indexHref}">${indexLabel}</a> or <a href="/library/">view all Permafrost Wiki entries</a>.</p></article></div></main>`;
   }
 
   if (route === '/') {
-    return `<h1>Permafrost Wiki</h1><p>Use the Permafrost Wiki for source-linked game information, story, survival guides, and official release news. Start with the Permafrost Guide for cold, shelter, tools, and co-op.</p><h2>Featured Permafrost Guides</h2><ul>${articleLinks(['survival-basics', 'cold-and-weather', 'shelter-network', 'early-access-release'])}</ul>`;
+    return `<h1>Permafrost Game Wiki</h1><p>Explore the Permafrost Game Wiki for source-linked game information, story, survival guides, online co-op, and official release news.</p><p>Browse the <a href="/library/">Permafrost Wiki</a> library or start with the <a href="/articles/co-op-survival.html">Permafrost co-op guide</a> for 1-4 player online survival.</p><h2>Featured Permafrost Guides</h2><ul>${articleLinks(['survival-basics', 'cold-and-weather', 'shelter-network', 'co-op-survival'])}</ul>`;
   }
 
   if (route === '/guides') {
     return `<main class="wrap"><section class="section"><p class="eyebrow">PERMAFROST GUIDE</p><h1>Permafrost Guide</h1><p>This Permafrost Guide covers cold weather, shelters, exploration, companions, and co-op. Browse the Permafrost Wiki for world, story, and release information.</p><h2>Permafrost Survival Guides</h2><ul>${articleLinks(['survival-basics', 'cold-and-weather', 'essential-tools', 'preparing-for-expedition', 'survival-hazards', 'shelter-network', 'exploration-progression', 'canine-companion', 'co-op-survival'])}</ul></section></main>`;
+  }
+
+  if (route === '/blog') {
+    return `<section class="content-section"><p class="eyebrow">PERMAFROST BLOG</p><h1>Permafrost guides and playtest notes</h1><p>Recent tutorials, walkthroughs, system observations, and curated release-week videos.</p><h2>Latest practical guides</h2><ul>${blogLinks(Object.keys(blogPosts))}</ul></section>`;
   }
 
   if (route === '/world') {
@@ -233,6 +305,11 @@ function injectStaticContent(document, route, metadata) {
     return document.replace(/(<article\b[^>]*\bdata-home-content\b[^>]*>)[\s\S]*?(<\/article>)/i, `$1<!-- seo-prerender:permafrost:start -->${fallback}<!-- seo-prerender:permafrost:end -->$2`);
   }
 
+
+  if (route === '/blog') {
+    return document.replace(/(<article\b[^>]*\bdata-blog-page\b[^>]*>)[\s\S]*?(<\/article>)/i, `$1<!-- seo-prerender:permafrost:start -->${fallback}<!-- seo-prerender:permafrost:end -->$2`);
+  }
+
   const prerendered = `<!-- seo-prerender:permafrost:start -->${fallback}<!-- seo-prerender:permafrost:end -->`;
   if (/<!-- seo-prerender:permafrost:start -->/i.test(document)) {
     return document.replace(/<!-- seo-prerender:permafrost:start -->[\s\S]*?<!-- seo-prerender:permafrost:end -->/i, prerendered);
@@ -245,7 +322,12 @@ function breadcrumbFor(route, metadata) {
   if (route === '/') return null;
   const items = [{ name: siteName, item: `${origin}/` }];
 
-  if (metadata.kind === 'article') {
+  if (metadata.kind === 'blog-post') {
+    items.push(
+      { name: 'Permafrost Blog', item: `${origin}/blog` },
+      { name: metadata.headline, item: `${origin}${route}` }
+    );
+  } else if (metadata.kind === 'article') {
     const section = metadata.section === 'World and Story'
       ? { name: 'World and Story', item: `${origin}/world` }
       : metadata.section === 'Release Information'
@@ -270,16 +352,16 @@ function breadcrumbFor(route, metadata) {
 function seoMarkup({ route, metadata }) {
   const canonical = `${origin}${route === '/' ? '/' : route}`;
   const pageId = `${canonical}#webpage`;
-  const isArticle = metadata.kind === 'article';
+  const isArticle = metadata.kind === 'article' || metadata.kind === 'blog-post';
   const graph = [];
 
   graph.push({
     '@type': 'WebSite',
     '@id': siteId,
     name: siteName,
-    alternateName: 'Permafrost Wiki & Guide',
+    alternateName: ['Permafrost Game Wiki', 'Permafrost Wiki & Guide'],
     url: `${origin}/`,
-    description: 'A community Permafrost Wiki and guide with source-linked game information.',
+    description: 'A community Permafrost Game Wiki with source-linked guides, co-op information, story, and release news.',
     inLanguage: ['en', 'zh-CN']
   });
 

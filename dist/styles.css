@@ -1582,6 +1582,61 @@ html[data-theme="light"] .database-masthead-shade {
   }
 }
 
+.blog-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card h3 {
+  margin: 12px 0 9px;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.22;
+}
+
+.blog-card > p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1.62;
+}
+
+.blog-card-meta,
+.blog-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.blog-card-meta {
+  color: var(--cyan);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.blog-card-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  color: var(--text-dim);
+  font-size: 0.84rem;
+}
+
+.blog-card-footer a {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .blog-card-meta,
+  .blog-card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
 /* ==========================================================================
    交互式地图（map.html）
    ========================================================================== */

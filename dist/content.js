@@ -5,6 +5,7 @@
   window.PERMAFROST_TEMPLATE = {
     sources: wiki.sources,
     articles: wiki.articles,
+    blogPosts: wiki.blogPosts,
     news: [
       {
         date: '2026-07-24', type: 'world', source: 'deepDive',
