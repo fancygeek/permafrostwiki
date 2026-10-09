@@ -478,6 +478,13 @@ body[data-page="guides"] .article.container {
   max-width: none;
 }
 
+/* Discovery pages need room for filters and card grids. Keep the prose cap for
+   reference articles, but let their browsing surfaces use the full container. */
+body[data-page="blog"] .article.container,
+body[data-page="news"] .article.container {
+  max-width: none;
+}
+
 .article-brief p {
   margin: 0 0 12px;
   color: var(--text-dim);
@@ -1089,6 +1096,7 @@ html[data-theme="light"] .database-masthead-shade {
 
 .database-controls output {
   min-width: 76px;
+  margin-left: auto;
   padding-bottom: 8px;
   color: var(--ice);
   text-align: right;
@@ -1554,6 +1562,12 @@ html[data-theme="light"] .database-masthead-shade {
   .database-stat-strip,
   .news-stack {
     grid-template-columns: 1fr;
+  }
+
+  .filter-tabs {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding-bottom: 0;
   }
 
   .database-stat-strip > div {

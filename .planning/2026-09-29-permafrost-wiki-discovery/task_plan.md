@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 13
+Phase 14
 
 ## Phases
 
@@ -91,6 +91,13 @@ Phase 13
 - [x] Regenerate and validate SEO metadata, static HTML, and representative rendered pages
 - **Status:** complete
 
+### Phase 14: Responsive Layout Re-audit
+- [x] Review the reported Blog layout issue and identify the constraining layout family
+- [x] Audit shared layout widths and responsive breakpoints across page families
+- [x] Recompose Blog/list-page grid behavior for desktop, tablet, and mobile widths
+- [x] Validate representative pages and controls at each target viewport
+- **Status:** complete
+
 ## Decisions Made
 | Decision | Rationale |
 |----------|-----------|
@@ -117,3 +124,5 @@ Phase 13
 | Initial local HTTP loop used unavailable `curl` PATH resolution and zsh's read-only `status` name | Used `/usr/bin/curl`, renamed the variable to `http_code`, and ran the localhost-only check with approved access. |
 | Phase 13 local preview server could not bind inside the restricted sandbox | Re-ran the localhost-only server with the already established approved `python3 -m http.server` scope. |
 | Tried an unsupported `tab.getState()` method while re-reading the in-app preview | Used the documented global state inventory and then opened a dedicated hidden preview tab, which returned the page accessibility tree directly. |
+| Existing local browser tab retained a stale CSS response after the stylesheet was edited | Opened the same localhost site under a fresh origin (`localhost` rather than `127.0.0.1`) for an uncached validation; deployment will receive the versioned published asset normally. |
+| Attempted a line-level patch inside the minified Field Wiki stylesheet | The one-line source could not provide stable patch context, so added the targeted responsive ordering override through the existing Field Wiki runtime stylesheet instead. |

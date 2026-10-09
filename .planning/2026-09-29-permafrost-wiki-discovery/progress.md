@@ -136,3 +136,29 @@
 - `git diff --check` passed.
 - Browser rendering passed for the homepage and co-op article. Accessibility inspection confirmed the intended title, H1, descriptive internal links, co-op copy, official source video, and related Blog link.
 - The localhost preview server was stopped after QA. Phase 13 is complete locally; no deployment, commit, or push was performed.
+
+## Session: 2026-10-09 — Responsive Layout Re-audit
+
+### Current Status
+- **Phase:** 14 - Responsive Layout Re-audit
+
+### Actions Taken
+- Reviewed the reported Blog screenshot and confirmed that its desktop list layout wastes the available horizontal space.
+- Began a cross-viewport audit focused on list/discovery pages, with the goal of preserving readable article widths while allowing editorial grids to use the desktop canvas.
+- Confirmed the narrow width is inherited only by root-template list pages. Added a semantic override for Blog and News so their filters and two-column card grids can use the full shell width; long-form article pages remain capped for readable prose.
+- Verified the fixed Blog page in a fresh desktop browser context: the list now spans the full 1180px container rather than an inherited 698px prose measure.
+- Measured Blog behavior at 1024px, 768px, and 390px. The grid remains two columns through tablet widths and becomes one column on mobile with no document overflow. Updated the mobile filter strip to wrap its visible categories and aligned the wrapped result count to the right.
+- Checked News, Guides, and a Field Wiki article at their relevant desktop/mobile layouts. News and Guides use their intended widths; the Field article has no mobile overflow but surfaces its sidebar above the main article, which will be corrected before final validation.
+- Corrected the Field Wiki mobile article order through the shared runtime styles: the main article remains first, with related links following it after the content.
+
+### Errors
+- An existing in-app preview tab kept a stale CSS response after a normal reload. Used a fresh localhost origin to validate the edited stylesheet without repeating the same stale-cache path.
+- A direct patch of the minified Field Wiki stylesheet could not match the single-line source. Added the equivalent scoped mobile override through the existing renderer-owned stylesheet instead.
+
+### Test Results
+- Blog desktop at 1280px: shell, article, and grid all use 1180px; cards are two equal 582px columns.
+- Blog tablet at 1024px and 768px: two equal card columns remain readable; navigation switches to Menu below the desktop breakpoint.
+- Blog mobile at 390px: one 343px card column, wrapped category filters, right-aligned result count, and no horizontal page overflow.
+- News desktop, Guides desktop, and Field Wiki article desktop/mobile all use their expected layout widths. The Field article now keeps its main content before related links on mobile.
+- JavaScript syntax checks passed for both renderers and the SEO generator; `git diff --check` passed.
+- Temporary browser viewport overrides and local preview servers remain local-only. No commit, push, or deployment was performed.

@@ -89,6 +89,24 @@
 - Browser validation shows the homepage now renders the new title, `Permafrost Game Wiki` H1, distinct `Permafrost Wiki` library link, direct `Permafrost co-op guide` CTA, and a featured co-op card in the actual JavaScript UI.
 - The co-op article renders a single `Permafrost co-op guide` H1, the exact `Permafrost coop` phrase once in its lead, 1–4 player detail, the official developer Q&A embed, source attribution, and a related recent co-op Blog link.
 
+## 2026-10-09 Responsive Re-audit Findings
+
+- The supplied desktop screenshot shows the Blog index at a large viewport with its search/filter controls and two-column card grid constrained to roughly half the usable page width, leaving an unintentional empty right region.
+- The issue is a desktop composition defect, not intentional reading-column whitespace: Blog is a discovery/list page and should use the template's wide content area, while prose articles can retain a narrower reading measure.
+- The next audit must cover both UI families, but the reported screen is the root-template Blog renderer in `dist/main.js` and its shared rules in `dist/styles.css`.
+- Root cause confirmed: desktop `.content-shell.no-toc` correctly expands to `var(--container)`, but its child `.article.container` remains capped at `78ch`. Only Home and Guides explicitly remove that cap, so Blog (and likely the root Library) collapses into a narrow left column even though it contains a multi-card discovery grid.
+- The responsive grid itself already switches from two columns to one at 600px. The needed fix is a semantic width policy: full-width discovery pages on desktop and tablet, with prose-oriented article pages left constrained for readability.
+- Live desktop measurement at 1280px confirms the mismatch: the outer Blog shell is 1180px wide, while the article/grid is only 698px wide and begins at the shell's left edge. The two cards are therefore only 341px each, leaving approximately 482px of unused shell space to the right.
+- The reported page is rendered by the root template. Its heading, control bar, eight cards, navigation, and theme control render correctly; only its available horizontal layout budget is being discarded.
+- After the targeted CSS override, an uncached 1280px desktop preview measures the Blog shell, article region, and grid at the same 1180px width. The two card tracks are 582px each, so the empty right column in the report is removed.
+- A stale in-app localhost tab initially retained the old CSS despite reload. A fresh `localhost` origin confirmed the new rule is parsed and active; this is a local preview cache artifact, not a style conflict in the source.
+- Breakpoint measurements after the width fix: at 1024px the Blog article area is 977px with two 480px cards and the desktop navigation remains visible; at 768px it is 721px with two 353px cards and the compact Menu control replaces the full navigation; at 390px it is 343px with one card column and no document-level horizontal overflow.
+- The mobile card layout is sound, but its category strip exposes a visible horizontal scrollbar. The filter control can wrap safely because it has only seven compact categories; the result count can also align to the right when it moves beneath the search field.
+- The fresh mobile Blog preview now has wrapped, fully visible category controls, a right-aligned result count, one 343px card column, and no document overflow. At desktop, the same CSS remains a two-column full-width grid.
+- Additional page-family checks: News now uses the full 1180px list width on desktop; Guides retains its intentional 220px desktop TOC plus 985px guide area; a Field Wiki article uses its intended 871px article plus 300px sidebar on desktop and collapses to one 347px column without overflow at 390px.
+- The Field Wiki article mobile audit exposes a separate ordering defect: the responsive sidebar becomes the first grid item, showing related links before the article headline. Mobile reading order should keep the article first and place contextual links after it.
+- The Field Wiki shared runtime styles now explicitly reset the mobile aside order. A fresh 390px preview confirms DOM/visual order is article first then sidebar, with no document-level horizontal overflow; the default browser viewport was reset after testing.
+
 ## Resources
 - First-party release announcement: https://www.toplitz-productions.com/news-2388/release-date-for-the-frozen-apocalypse-is-moved-to-october-9-2026.html?page_n167=2
 - First-party Gamescom trailer announcement: https://www.toplitz-productions.com/news-2388/permafrost-unleashes-the-frozen-apocalypse-in-new-gamescom-trailer.html?page_n167=11

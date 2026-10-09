@@ -60,6 +60,9 @@
 
   function ensureFieldScaleStyles() {
     if (document.querySelector('#field-scale-styles')) return;
+    const mobileLayoutStyle = document.createElement('style');
+    mobileLayoutStyle.textContent = '@media(max-width:850px){.article-layout>.aside{order:0}}';
+    document.head.append(mobileLayoutStyle);
     const style = document.createElement('style');
     style.id = 'field-scale-styles';
     style.textContent = `:root{--max:1240px}body{font-size:17px;line-height:1.65}.section{margin-top:72px}.section-head{gap:32px;margin-bottom:26px}.section-head p{max-width:540px;font-size:1rem}.page-title{margin:6px 0 12px;font-size:clamp(2.25rem,5vw,4rem);line-height:1;letter-spacing:-.055em}.card{padding:24px}.card h3{margin:13px 0 9px;font-size:1.26rem;line-height:1.28}.card p{font-size:1rem;line-height:1.62}.card-footer{margin-top:22px;font-size:.78rem}.article-layout{grid-template-columns:minmax(0,880px) 300px;gap:54px}.article{max-width:880px}.article .lead{font-size:1.2rem;line-height:1.65}.article h2{margin:42px 0 14px;font-size:1.6rem}.fact-list{gap:12px;margin:18px 0}.fact-list li{padding:10px 0 10px 15px;font-size:1.03rem;line-height:1.62}.aside{width:300px}.side-list li{padding:12px 0;font-size:.94rem}@media(max-width:850px){.article-layout{grid-template-columns:1fr}.aside{width:auto}}@media(max-width:520px){body{font-size:16px}.section{margin-top:48px}.page-title{font-size:2.45rem}.card{padding:19px}.card h3{font-size:1.16rem}.section-head p,.card p{font-size:.98rem}.article .lead{font-size:1.1rem}.article h2{font-size:1.42rem}}`;
