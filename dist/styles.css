@@ -326,7 +326,8 @@ html[data-theme="light"] .hero-media {
   object-position: center 30%;
 }
 
-.hero-shade {
+.hero-shade,
+.database-masthead-shade {
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -335,7 +336,8 @@ html[data-theme="light"] .hero-media {
     linear-gradient(0deg, rgba(7, 16, 24, 0.95), rgba(7, 16, 24, 0.2) 55%, rgba(7, 16, 24, 0.45));
 }
 
-html[data-theme="light"] .hero-shade {
+html[data-theme="light"] .hero-shade,
+html[data-theme="light"] .database-masthead-shade {
   background:
     linear-gradient(90deg, rgba(237, 248, 251, 0.95), rgba(237, 248, 251, 0.78) 44%, rgba(237, 248, 251, 0.4)),
     linear-gradient(0deg, rgba(237, 248, 251, 0.96), rgba(237, 248, 251, 0.3) 55%, rgba(237, 248, 251, 0.5));
@@ -481,7 +483,9 @@ body[data-page="guides"] .article.container {
 /* Discovery pages need room for filters and card grids. Keep the prose cap for
    reference articles, but let their browsing surfaces use the full container. */
 body[data-page="blog"] .article.container,
-body[data-page="news"] .article.container {
+body[data-page="news"] .article.container,
+body[data-page="database"] .article.container,
+body[data-page="patch"] .article.container {
   max-width: none;
 }
 
@@ -942,22 +946,19 @@ tr:last-child td {
   align-items: end;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(140deg, #102a38, #071018 60%, #0d2936);
+  background: #071018;
+}
+
+.database-masthead::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: url("assets/permafrost-hero.png") center 30% / cover no-repeat;
 }
 
 .database-masthead-shade {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(0deg, rgba(7, 16, 24, 0.95), rgba(7, 16, 24, 0.35) 70%);
-}
-
-html[data-theme="light"] .database-masthead {
-  background: linear-gradient(140deg, #dff1f6, #f7fcfe 60%, #e4f5f8);
-}
-
-html[data-theme="light"] .database-masthead-shade {
-  background: linear-gradient(0deg, rgba(237, 248, 251, 0.95), rgba(237, 248, 251, 0.35) 70%);
+  pointer-events: none;
 }
 
 .database-masthead-copy {
@@ -974,51 +975,12 @@ html[data-theme="light"] .database-masthead-shade {
 
 .database-masthead-copy > p:last-child {
   margin: 0;
-  color: var(--text-dim);
-}
-
-.database-tabs {
-  position: sticky;
-  top: var(--header-h);
-  z-index: 20;
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg-elev) 94%, transparent);
-  backdrop-filter: blur(10px);
-}
-
-.database-tabs .container {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  padding-block: 9px;
-}
-
-.database-tabs a,
-.database-tabs button {
-  flex: 0 0 auto;
-  padding: 6px 10px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-dim);
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-.database-tabs a:hover,
-.database-tabs a[data-active="true"],
-.database-tabs button:hover,
-.database-tabs button[data-active="true"] {
   color: var(--text);
-  border-color: var(--line-strong);
-  background: var(--panel);
 }
 
 .database-stat-strip {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border-block: 1px solid var(--line-strong);
   margin-bottom: 16px;
 }
@@ -1519,14 +1481,14 @@ html[data-theme="light"] .database-masthead-shade {
     position: static;
   }
 
-  .database-grid,
-  .database-stat-strip {
+  .database-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .database-stat-strip > div:nth-child(2n) {
-    border-right: 0;
+  .database-stat-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
 }
 
 @media (max-width: 600px) {

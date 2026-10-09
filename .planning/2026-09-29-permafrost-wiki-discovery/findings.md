@@ -107,6 +107,30 @@
 - The Field Wiki article mobile audit exposes a separate ordering defect: the responsive sidebar becomes the first grid item, showing related links before the article headline. Mobile reading order should keep the article first and place contextual links after it.
 - The Field Wiki shared runtime styles now explicitly reset the mobile aside order. A fresh 390px preview confirms DOM/visual order is article first then sidebar, with no document-level horizontal overflow; the default browser viewport was reset after testing.
 
+## 2026-10-09 Library Hierarchy Findings
+
+- The root-template Library is rendered separately from Blog in `dist/main.js`. It places `data-library-tabs` in a standalone, sticky, full-width `.database-tabs` strip directly under the masthead; visually, this competes with the actual global header as a second navigation bar.
+- Library also uses `.article.container`, which retains the `78ch` article-width cap. The earlier responsive fix correctly exempted Blog and News, but omitted `body[data-page="database"]`, leaving the Library cards and controls in a narrow left column.
+- Library has three statistics, but its stat strip reserves five desktop tracks. Its desktop layout should use three equal tracks, while the cards should use the established two-up desktop/tablet and one-up mobile grid.
+- Browser geometry then exposed a related scaffold mismatch: unlike Blog and News, `database.html` had no `.content-shell`, so an unconstrained Library article would stretch to the scrollable viewport edge. The final composition must reuse the standard no-TOC content shell for a centered 1180px discovery area.
+- Desktop QA now measures one actual header navigation, no legacy category strip, one local filter group, a centered 1180px content shell, two 582px cards, and three equal stat tracks. At 768px the inherited two-column stat breakpoint left the third statistic alone on a partial second row; preserve three stat tracks through tablet and only stack them on mobile.
+
+## 2026-10-09 Cross-page Audit Findings
+
+- Root-template Home, News, Blog, Guides, Library, Release, and About pages now share standard page-shell scaffolds; Blog, News, and Library correctly use content-level search/filter controls rather than a second global navigation bar.
+- The Release page was the remaining root-template width regression: it used a table-of-contents sidebar for just two sections while rendering a two-card discovery grid inside the `78ch` prose cap. At 1280px this yielded a 698px grid of 341px cards and an unused right region in the main column.
+- Release is a short discovery/links page, not a long article. It should use the same centered no-TOC shell and full-width discovery policy as Blog and Library; the About page retains its TOC because it remains a reference page with prose/table content.
+- Field Wiki routes use a separate header/layout system. Its Library filter is content-local and its card grids are already bound to the full `.wrap` width; articles use the narrower main column only with an accompanying related-reading aside.
+- Desktop browser audit at 1280px confirms one global nav and no legacy category strip on every root-template route. Home, News, Blog, Library, and corrected Release use a centered 1180px discovery width; Guides intentionally retains a 220px TOC alongside a 985px guide area; About intentionally retains the narrower 698px reference column plus its TOC.
+- Mobile audit at 390px confirms every root-template page uses the Menu control with only one global nav instance, all card/grid tracks are 343px wide, search filters wrap inside their content toolbars, and none overflow horizontally. The Field Wiki Library has one content-local filter group and a 347px single card column; a Field article keeps the article above its aside.
+
+## 2026-10-09 Homepage and Blog Visual Findings
+
+- Home renders `assets/permafrost-hero.png` beneath a two-layer dark/light-aware ice overlay. Blog and the other root discovery pages use `.database-masthead`, a separate solid three-stop gradient with no image or equivalent overlay depth.
+- The inconsistency is structural rather than a theme-token issue: the masthead palette hard-codes colors that only loosely resemble Home's hero treatment. The correction should make the generic masthead use the same image, positioning, and polar-night overlay system, while preserving its shorter reading-page height.
+- Dark-theme computed styles confirm the shared image (`permafrost-hero.png`), focal point (`center 30%`), and two overlay gradients now match Home exactly. The only remaining mismatch was Blog's muted-grey masthead description; it now uses the shared snow-white text token.
+- Light-theme browser verification confirms both surfaces now share the same image, overlay gradients, and `rgb(16, 39, 52)` body-copy colour. In dark theme both use `rgb(238, 250, 255)`; the 390px Blog masthead preserves its 240px short format without horizontal overflow.
+
 ## Resources
 - First-party release announcement: https://www.toplitz-productions.com/news-2388/release-date-for-the-frozen-apocalypse-is-moved-to-october-9-2026.html?page_n167=2
 - First-party Gamescom trailer announcement: https://www.toplitz-productions.com/news-2388/permafrost-unleashes-the-frozen-apocalypse-in-new-gamescom-trailer.html?page_n167=11

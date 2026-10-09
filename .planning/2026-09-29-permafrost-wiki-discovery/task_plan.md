@@ -4,7 +4,7 @@
 Produce a researched, implementation-ready information architecture for a community wiki about Permafrost, aligned to its announced Early Access scope and a future game-template site build.
 
 ## Current Phase
-Phase 14
+Phase 17 (complete)
 
 ## Phases
 
@@ -96,6 +96,24 @@ Phase 14
 - [x] Audit shared layout widths and responsive breakpoints across page families
 - [x] Recompose Blog/list-page grid behavior for desktop, tablet, and mobile widths
 - [x] Validate representative pages and controls at each target viewport
+- **Status:** complete
+
+### Phase 15: Library Hierarchy & Responsive Layout Correction
+- [x] Remove the Library category strip from the global-navigation layer
+- [x] Recompose Library as a full-width discovery page with content-level search and filters
+- [x] Validate desktop, tablet, and mobile Library behavior and overflow
+- **Status:** complete
+
+### Phase 16: Cross-page Navigation & Layout Audit
+- [x] Inventory root-template and Field Wiki page families for duplicate navigation and inappropriate discovery-page width caps
+- [x] Browser-test representative navigation, discovery, guide, and article pages across desktop, tablet, and mobile
+- [x] Correct any replicated hierarchy or responsive-layout defects and revalidate
+- **Status:** complete
+
+### Phase 17: Homepage and Blog Visual-System Alignment
+- [x] Compare homepage and Blog computed hero/masthead colors in both themes
+- [x] Consolidate the two masthead treatments onto the shared polar-night visual system
+- [x] Verify visual alignment and responsive behavior at desktop and mobile widths
 - **Status:** complete
 
 ## Decisions Made

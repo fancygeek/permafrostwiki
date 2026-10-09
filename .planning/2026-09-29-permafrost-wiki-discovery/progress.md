@@ -162,3 +162,73 @@
 - News desktop, Guides desktop, and Field Wiki article desktop/mobile all use their expected layout widths. The Field article now keeps its main content before related links on mobile.
 - JavaScript syntax checks passed for both renderers and the SEO generator; `git diff --check` passed.
 - Temporary browser viewport overrides and local preview servers remain local-only. No commit, push, or deployment was performed.
+
+## Session: 2026-10-09 — Library Hierarchy & Responsive Layout Correction
+
+### Current Status
+- **Phase:** 15 - Library Hierarchy & Responsive Layout Correction
+
+### Actions Taken
+- Reviewed the reported Library screenshot and traced the root-template render path and its shared CSS.
+- Confirmed two separate implementation defects: category buttons are rendered as a sticky page-wide strip beneath the masthead, and the Library discovery surface still inherits the narrow prose article cap.
+- Recorded the intended correction: make categories a local search filter, use the full discovery container, and correct the three-stat desktop grid before cross-viewport browser QA.
+- Rebuilt the Library markup so its search field and category buttons sit together in the content-area toolbar; the standalone `.database-tabs` strip is no longer rendered or styled.
+- Extended the full-width discovery-page rule to the Library and changed its stat strip to three equal desktop tracks.
+- Desktop browser geometry revealed that the old Library HTML did not use the shared centered content shell. Replaced that unique scaffold with the same no-TOC shell used by Blog and News, preserving the full discovery width within the standard page gutters.
+- Desktop QA confirmed the final hierarchy and width, then tablet QA revealed the three-item stat strip inherited a two-column breakpoint. Corrected that breakpoint so the three equal stats remain in one usable row through tablet widths.
+- Removed the obsolete two-column-only stat-divider exception so all three tablet statistics retain their separators.
+
+### Errors
+- The restricted sandbox initially rejected the localhost static server bind. The established localhost-only approval started the preview; a second start then reported the expected address-in-use response because that approved preview was already running.
+- The first browser navigation retained a cached version of `database.html`. Loaded the same local preview with a cache-busting query before measuring, rather than relying on the stale response.
+- The sandbox initially refused to terminate the temporary preview process. Retried that exact, known local server PID with approval and confirmed the preview listener was removed.
+- The planning completion script correctly reports 12/15 total phases complete because older publishing tasks in Phases 9–11 remain intentionally open; Phase 15 itself is complete and this request did not authorize publication.
+
+### Test Results
+- Desktop at 1280px: exactly one global navigation, no `.database-tabs` element, one local Library filter group, a centered 1180px shell, two 582px cards, and three equal 393px stats.
+- Tablet at 768px: 721px content area, two 353px cards, three equal 240px stat tracks with `1px`, `1px`, and terminal `0px` right borders, and no horizontal overflow.
+- Mobile at 390px: 343px single-card grid, 343px stacked stats, wrapped local filters, and no horizontal overflow.
+- JavaScript syntax checks passed for `dist/main.js` and `dist/assets/site.js`; no legacy `.database-tabs` reference remains in `dist/`; `git diff --check` passed.
+- Reset the temporary browser viewport to its default 1280×720 and closed the temporary local preview tab. No deployment, commit, or push was performed.
+
+## Session: 2026-10-09 — Cross-page Navigation & Layout Audit
+
+### Current Status
+- **Phase:** 16 - Cross-page Navigation & Layout Audit
+
+### Actions Taken
+- Started a full cross-page follow-up after the Library correction, using the same checks for duplicate navigation, discovery-page width, and responsive overflow.
+- Restored the active plan and inventoried the two independent page families: root-template pages rendered by `dist/main.js` and Field Wiki routes rendered by `dist/assets/site.js`.
+- Measured the root Release page at 1280px and confirmed the same discovery-grid regression: a 698px article cap split its cards into two 341px tracks while an unnecessary two-link TOC consumed the shell.
+- Rebuilt Release as a no-TOC, full-width discovery surface; its cards can now use the same centered content width as Blog and Library.
+- Completed desktop checks across all root-template routes: Home, News, Blog, Library, and Release use 1180px discovery areas; Guides and About retain their deliberately narrower TOC/reference layouts. Each has one global nav and no legacy category strip.
+- Completed mobile checks across every root-template route plus the Field Wiki Library and a Field Wiki article. Card grids collapse to one column, filter controls wrap in their content areas, the mobile menu is the sole global navigation affordance, article content precedes the Field Wiki aside, and no page has horizontal overflow.
+
+### Errors
+- The first multi-file patch used an outdated Release scaffold context. Re-read the exact generated shell (including its inline TOC markup) and applied a targeted replacement instead.
+- A later planning-file patch included an invalid empty hunk and therefore made no changes. Re-applied the Phase 16 status update as a focused patch.
+
+### Test Results
+- Root-template desktop audit at 1280px: every route has one global nav and no legacy full-width category strip. Home, News, Blog, Library, and Release each measure 1180px; the intentional Guides and About TOC layouts measure 985px and 698px respectively for their content columns. None overflow.
+- Root-template tablet audit at 768px: Home, News, Blog, Guides, Library, and Release use 721px content areas; About remains a centered 698px reading column. Each shows the compact Menu control and has no overflow.
+- Root-template mobile audit at 390px: all pages use 343px content/card tracks with no overflow. News, Blog, and Library filters wrap in their local toolbar; only the intended Guides/About table of contents remains available.
+- Field Wiki audit: its Library has one header nav, one local filter group, a 1225px three-card desktop grid, a 713px tablet single-card grid, and a 347px mobile single-card grid, without overflow. A Field article at 390px keeps article content before its related-reading aside.
+- The temporary browser viewport was reset and a fresh preview confirmed the default 1280×720 size. No deployment, commit, or push was performed.
+
+## Session: 2026-10-09 — Homepage and Blog Visual-System Alignment
+
+### Current Status
+- **Phase:** 17 - Homepage and Blog Visual-System Alignment
+
+### Actions Taken
+- Started the requested visual-system review after the cross-page structural audit.
+- Confirmed the implementation divergence: Home uses the source hero image plus layered ice-blue overlays, while Blog uses a separate flat `.database-masthead` gradient. Both are nominally blue but do not share the same colour depth, texture, or contrast treatment.
+- Replaced the Blog/discovery-page masthead's independent flat gradient with the homepage hero image at the same focal point, and consolidated the dark/light overlay rules so both surfaces inherit the same contrast and ice-blue colour treatment.
+- Browser-computed dark-theme layers now match exactly; corrected the remaining Blog masthead copy colour from muted grey to the same snow-white text token used by the homepage hero.
+- Verified both themes in a browser: image, focal point, dual overlay gradients, and copy colours match across Home and Blog. At 390px Blog retains its short masthead and has no horizontal overflow.
+
+### Test Results
+- Dark desktop: Home and Blog both use `permafrost-hero.png`, the same `center 30%` focal point, identical two-layer polar-night overlay gradients, and `rgb(238, 250, 255)` masthead copy.
+- Light desktop: Home and Blog both use the same image and pale overlay gradients, with `rgb(16, 39, 52)` masthead copy.
+- Mobile at 390px: Blog retains its 240px reading-page masthead, uses the shared dark visual treatment, and has no horizontal overflow.
+- `node --check` passed for both runtime files and `git diff --check` passed. The temporary viewport was restored to 1280×720 with the dark theme selected. No deployment, commit, or push was performed.
